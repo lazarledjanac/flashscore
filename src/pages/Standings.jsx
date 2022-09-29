@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  useGetStandingsByLeagueIdQuery,
   useGetLeagueByCountryNameQuery,
   useGetCurrentRoundByLeagueIdQuery,
   useGetResultsByRoundAndLeagueIdQuery,
@@ -13,6 +12,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
 import { IoIosArrowBack } from "react-icons/io";
 import Loader from "../components/Loader";
+import Table from "../components/Table";
 
 const Standings = () => {
   const navigate = useNavigate();
@@ -27,66 +27,11 @@ const Standings = () => {
   }).isFetching;
   const league = useGetStandingsBySeasonAndLeagueIdQuery({ season, leagueId })
     ?.data?.response[0].league;
-  const standings = useGetStandingsBySeasonAndLeagueIdQuery({
-    season,
-    leagueId,
-  })?.data?.response[0]?.league?.standings[0];
   const currentRound =
     useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-1);
 
   console.log(league);
 
-  const Row = ({ i }) => {
-    let spans = [];
-    for (let j = 0; j < standings[i]?.form?.length; j++) {
-      spans[j] = (
-        <span
-          style={
-            standings[i]?.form[j] === "W"
-              ? { backgroundColor: "lightgreen" }
-              : standings[i]?.form[j] === "L"
-              ? { backgroundColor: "red" }
-              : { backgroundColor: "yellow" }
-          }
-        >
-          {standings[i]?.form[j]}
-        </span>
-      );
-    }
-    const form = (
-      <td style={{ display: "flex", justifyContent: "center" }}>
-        {spans.map((span) => span)}
-      </td>
-    );
-    return (
-      <tr>
-        <td>{standings[i]?.rank}</td>
-        <td
-          style={{ textAlign: "left", paddingLeft: "3vw", width: "30%" }}
-          onClick={() => {
-            navigate(`/standings/${leagueId}/teams/${standings[i]?.team?.id}`);
-          }}
-        >
-          <img
-            src={standings[i]?.team?.logo}
-            width="20px"
-            height="20px"
-            alt=""
-          />
-          {standings[i]?.team?.name}
-        </td>
-        <td>{standings[i]?.all?.played}</td>
-        <td>{standings[i]?.all?.win}</td>
-        <td>{standings[i]?.all?.draw}</td>
-        <td>{standings[i]?.all?.lose}</td>
-        <td>{standings[i]?.all?.goals?.for}</td>
-        <td>{standings[i]?.all?.goals?.against}</td>
-        <td>{standings[i]?.goalsDiff}</td>
-        <td>{standings[i]?.points}</td>
-        {form}
-      </tr>
-    );
-  };
   const Leagues = () => {
     const { data: leagues, isFetching } = useGetLeagueByCountryNameQuery(
       league?.country
@@ -120,32 +65,6 @@ const Standings = () => {
             {leagues?.response[i]?.league?.name}
           </div>
         ))}
-      </div>
-    );
-  };
-  const Table = () => {
-    let array = [];
-    for (let i = 0; i < standings?.length; i++) array[i] = i;
-    return (
-      <div className="standings">
-        <table>
-          <tr>
-            <th>#</th>
-            <th>Team</th>
-            <th>MP</th>
-            <th>W</th>
-            <th>D</th>
-            <th>L</th>
-            <th>GF</th>
-            <th>GA</th>
-            <th>GD</th>
-            <th>PTS</th>
-            <th>Form</th>
-          </tr>
-          {array.map((i) => (
-            <Row i={i} />
-          ))}
-        </table>
       </div>
     );
   };
@@ -330,8 +249,16 @@ const Standings = () => {
       return (
         <tr>
           <td>{i + 1}</td>
-          <td>{topscorers[i]?.player?.name}</td>
-          <td>{topscorers[i]?.statistics[0]?.team?.name}</td>
+          <td onClick={() => navigate(`/player/${topscorers[i]?.player?.id}`)}>
+            {topscorers[i]?.player?.name}
+          </td>
+          <td
+            onClick={() =>
+              navigate(`/teams/${topscorers[i]?.statistics[0]?.team?.id}`)
+            }
+          >
+            {topscorers[i]?.statistics[0]?.team?.name}
+          </td>
           <td>{topscorers[i]?.statistics[0]?.goals?.total}</td>
           <td>{topscorers[i]?.statistics[0]?.goals?.assists || 0}</td>
         </tr>
@@ -411,7 +338,7 @@ const Standings = () => {
             <button onClick={() => setDisplay("topscorers")}>TopScorers</button>
             <button onClick={() => setDisplay("archive")}>Archive</button>
           </div>
-          {display === "table" && <Table />}
+          {display === "table" && <Table season={season} leagueId={leagueId} />}
           {display === "results" && <Results />}
           {display === "fixtures" && <Fixtures />}
           {display === "topscorers" && <TopScorers />}
@@ -421,5 +348,4 @@ const Standings = () => {
     </>
   );
 };
-
 export default Standings;

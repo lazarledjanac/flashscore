@@ -4,18 +4,20 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   useGetTeamByIdQuery,
   useGetTransfersByTeamIdQuery,
+  useGetLeagueByTeamIdQuery,
+  useGetSquadByTeamIdQuery,
 } from "../services/footballApi";
 import { IoIosArrowBack } from "react-icons/io";
 import Results from "../components/Results";
 import UpcomingFixtures from "../components/UpcomingFixtures";
 import Loader from "../components/Loader";
+import Table from "../components/Table";
+import { DateTime } from "luxon";
 
 const Team = () => {
   const { id, teamId, leagueId } = useParams();
   const navigate = useNavigate();
-  console.log(id);
-  console.log(teamId);
-  console.log(leagueId);
+
   let navigation = id
     ? `/fixture/${id}`
     : leagueId
@@ -24,6 +26,11 @@ const Team = () => {
 
   const team = useGetTeamByIdQuery(teamId)?.data?.response[0]?.team;
   const stadium = useGetTeamByIdQuery(teamId)?.data?.response[0]?.venue;
+  const league = useGetLeagueByTeamIdQuery(teamId).data;
+  console.log(league);
+
+  const year = DateTime.now().year;
+  const [season, setSeason] = useState(year);
 
   const Info = () => {
     return (
@@ -117,6 +124,51 @@ const Team = () => {
       </div>
     );
   };
+  const Standings = () => {
+    return (
+      <Table
+        changeState={() => setContent("info")}
+        emphasize={teamId}
+        season={season}
+        leagueId={league?.response[0]?.league?.id}
+      />
+    );
+  };
+  const Squad = () => {
+    const squad = useGetSquadByTeamIdQuery(teamId)?.data?.response[0]?.players;
+    console.log(squad);
+
+    let array = [];
+    for (let i = 0; i < squad?.length; i++) array[i] = i;
+    return (
+      <div className="squad">
+        <table>
+          <tr>
+            <th></th>
+            <th>Number</th>
+            <th>Name</th>
+            <th> Position</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Position</th>
+          </tr>
+          {array.map((i) => (
+            <tr onClick={() => navigate(`/player/${squad[i]?.id}`)}>
+              <td>
+                <img src={squad[i]?.photo} alt="" />
+              </td>
+              <td>{squad[i]?.number}</td>
+              <td>{squad[i]?.name}</td>
+              <td>({squad[i]?.position})</td>
+            </tr>
+          ))}
+        </table>
+      </div>
+    );
+  };
   const [content, setContent] = useState("info");
   return (
     <div style={{ display: "flex" }}>
@@ -180,8 +232,9 @@ const Team = () => {
         {content === "fixtures" && (
           <UpcomingFixtures teamId={teamId} next={20} />
         )}
+        {content === "standings" && <Standings />}
+        {content === "squad" && <Squad />}
         {content === "transfers" && <Transfers />}
-        <hr width="80%" />
       </div>
     </div>
   );

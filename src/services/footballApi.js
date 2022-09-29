@@ -88,6 +88,15 @@ export const footballApi = createApi({
     getCountry: builder.query({
       query: (name) => createRequest(`/countries?name=${name}`),
     }),
+    getLeagueByTeamId: builder.query({
+      query: (id) => createRequest(`/leagues?team=${id}`),
+    }),
+    getSquadByTeamId: builder.query({
+      query: (id) => createRequest(`/players/squads?team=${id}`),
+    }),
+    getTransfersByPlayerId: builder.query({
+      query: (id) => createRequest(`/transfers?player=${id}`),
+    }),
   }),
 });
 export const {
@@ -114,4 +123,7 @@ export const {
   useGetStandingsBySeasonAndLeagueIdQuery,
   useGetPlayerByIdQuery,
   useGetCountryQuery,
+  useGetLeagueByTeamIdQuery,
+  useGetSquadByTeamIdQuery,
+  useGetTransfersByPlayerIdQuery,
 } = footballApi;

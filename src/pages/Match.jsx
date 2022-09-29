@@ -7,6 +7,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import MatchDetails from "../components/MatchDetails";
 import Odds from "../components/Odds";
 import HeadToHead from "../components/HeadToHead";
+import Table from "../components/Table";
 
 const Match = () => {
   let { id, teamId, leagueId } = useParams();
@@ -25,6 +26,9 @@ const Match = () => {
   const awayId = match?.teams?.away?.id;
   console.log(match);
 
+  const year = DateTime.now().year;
+  const [season, setSeason] = useState(year);
+
   let navigation = leagueId
     ? `/standings/${leagueId}/teams/${teamId}`
     : teamId
@@ -34,6 +38,18 @@ const Match = () => {
 
   const [display, setDisplay] = useState();
 
+  const Standings = () => {
+    return (
+      <div style={{ width: "50vw", margin: "auto" }}>
+        <Table
+          emphasize={homeId}
+          emphasizeGuest={awayId}
+          season={season}
+          leagueId={match?.league?.id}
+        />
+      </div>
+    );
+  };
   return (
     <div>
       <div style={{ display: "-webkit-inline-flex" }}>
@@ -157,7 +173,7 @@ const Match = () => {
           onClick={() => setDisplay("match")}
         />
       )}
-      {display === "standings" && "Standings"}
+      {display === "standings" && <Standings />}
       <br />
       <br />
     </div>

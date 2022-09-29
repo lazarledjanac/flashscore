@@ -279,6 +279,9 @@ code {
   height: auto;
   background-color: white;
   border-radius: 15px;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  padding-bottom: 3vh;
   div {
     margin-top: 2vh;
   }
@@ -341,7 +344,7 @@ code {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  width: 90%;
+  width: 100%;
   height: 10vh;
   border: 1px solid;
   border-radius: 10px;
@@ -358,7 +361,7 @@ code {
 }
 .standings {
   display: flex;
-  width: 60vw;
+  width: 100%;
   flex-direction: column;
 
   border: 1px dashed gray;
@@ -367,9 +370,7 @@ code {
   table,
   th,
   td {
-    // border: 1px solid;
     text-align: center;
-    // border-collapse: collapse;
     span {
       width: 30px;
       height: 22px;
@@ -488,17 +489,17 @@ code {
   display: flex;
   flex-direction: column;
   width: 100%;
-  justify-content: space-around;
   align-items: center;
+  text-align: center;
   h4 {
-    width: fit-content;
+    width: 90%;
     height: fit-content;
     padding: 10px;
     border: 1px solid gray;
     border-radius: 10px;
     img {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
     }
   }
 }
@@ -548,7 +549,6 @@ code {
   flex-direction: column;
   width: 40vw;
   height: fit-content;
-  margin-top: 2vh;
   background-color: white;
   border-radius: 10px;
   padding: 1vw;
@@ -580,5 +580,33 @@ code {
   div {
     width: fit-content;
     font-size: medium;
+    padding-top: 2vh;
   }
+}
+.squad {
+  width: 95%;
+  table {
+    display: grid;
+    width: 100%;
+    grid-template-columns: auto auto;
+  }
+  tr {
+    text-align: left;
+    border-bottom: 1px solid black;
+  }
+  td,
+  th {
+    min-width: 4vw;
+  }
+  img {
+    width: 70px;
+    height: 70px;
+  }
+}
+.player-transfers {
+  width: 40vw;
+  height: fit-content;
+  background-color: white;
+  border-radius: 10px;
+  padding: 1vw;
 }

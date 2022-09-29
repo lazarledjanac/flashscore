@@ -51,7 +51,7 @@ const Results = ({ teamId, leagueId, last }) => {
           <img src={match?.league?.logo} width="40px" height="40px" alt="" />
           {match?.league?.name}
         </div>
-        <div style={{ flex: 2 }}>
+        <div style={{ flex: 3 }}>
           <div style={isHome ? bold : {}}>{match?.teams?.home?.name}</div>
           <div style={!isHome ? bold : {}}>{match?.teams?.away?.name}</div>
         </div>
