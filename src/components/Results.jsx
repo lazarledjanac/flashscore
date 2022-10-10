@@ -16,9 +16,6 @@ const Results = ({ teamId, leagueId, last }) => {
     const match = useGetPreviousFixturesByTeamIdQuery({ teamId, last })?.data
       ?.response[game];
     const team = useGetTeamByIdQuery(teamId)?.data?.response[0]?.team;
-    let navigation = leagueId
-      ? `/standings/${leagueId}/teams/${teamId}/fixture/${match?.fixture?.id}`
-      : `/teams/${teamId}/fixture/${match?.fixture?.id}`;
 
     const isHome = match?.teams?.home?.name === team?.name;
     const victory = { backgroundColor: "lightgreen" };
@@ -44,7 +41,7 @@ const Results = ({ teamId, leagueId, last }) => {
       <div
         className="lastFixtures"
         style={outcome}
-        onClick={() => navigate(navigation)}
+        onClick={() => navigate(`/fixture/${match?.fixture?.id}`)}
       >
         <div>{DateTime.fromISO(match?.fixture?.date).toFormat("dd-LL-y")}</div>
         <div style={{ width: "20vw" }}>

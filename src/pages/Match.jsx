@@ -10,7 +10,7 @@ import HeadToHead from "../components/HeadToHead";
 import Table from "../components/Table";
 
 const Match = () => {
-  let { id, teamId, leagueId } = useParams();
+  let { id } = useParams();
   let navigate = useNavigate();
 
   const match = useGetFixtureByIdQuery(id)?.data?.response[0];
@@ -28,13 +28,6 @@ const Match = () => {
 
   const year = DateTime.now().year;
   const [season, setSeason] = useState(year);
-
-  let navigation = leagueId
-    ? `/standings/${leagueId}/teams/${teamId}`
-    : teamId
-    ? `/teams/${teamId}`
-    : `/`;
-  if (leagueId && !teamId) navigation = `/standings/${leagueId}`;
 
   const [display, setDisplay] = useState();
 
@@ -56,7 +49,7 @@ const Match = () => {
         <h1
           style={{ marginLeft: "2vw" }}
           onClick={() => {
-            navigate(navigation);
+            navigate(`/fixture/${id}`);
           }}
         >
           <IoIosArrowBack />

@@ -2,9 +2,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const footballApiHeaders = {
   "X-RapidAPI-Key": "e2685d08d9msh237ed081fdee5e3p1cab4djsndf01bbc9a1d0",
-  "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
+  "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com'",
 };
-const baseUrl = "https://api-football-v1.p.rapidapi.com/v3";
+const baseUrl = "https://api-football-beta.p.rapidapi.com";
 const createRequest = (url) => ({ url, headers: footballApiHeaders });
 export const footballApi = createApi({
   reducerPath: "footballApi",

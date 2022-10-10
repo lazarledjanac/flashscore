@@ -180,6 +180,7 @@ const Standings = () => {
     for (let i = currentRound; i <= leagueRounds; i++) {
       matchdays[i] = i;
     }
+    console.log(matchdays);
     const Fixture = ({ matchday }) => {
       const { data: results, isFetching } =
         useGetResultsByRoundAndLeagueIdQuery({
