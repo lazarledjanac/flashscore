@@ -15,6 +15,7 @@ const Fixture = ({ game }) => {
       onClick={() => {
         navigate(`/fixture/${game.fixture.id}`);
       }}
+      key={game.fixture.id}
     >
       {/* <div className="game-league">
         <AiFillStar style={{ color: "orange" }} /> {league}

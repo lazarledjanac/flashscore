@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import Statistics from "../components/Statistics";
-import MatchSummary from "../components/MatchSummary";
-import Lineups from "../components/Lineups";
+import { Statistics, MatchSummary, Lineups } from "../components";
 
 const MatchDetails = ({ id }) => {
   const [details, setDetails] = useState(<MatchSummary id={id} />);

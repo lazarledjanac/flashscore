@@ -1,6 +1,6 @@
 import React from "react";
 import { useGetFixtureByIdQuery } from "../services/footballApi";
-import Statistic from "../components/Statistic";
+import { Statistic } from "../components";
 
 const Statistics = ({ id }) => {
   const match = useGetFixtureByIdQuery(id)?.data?.response[0];

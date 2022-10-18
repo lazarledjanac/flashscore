@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BsStar } from "react-icons/bs";
 import { DateTime } from "luxon";
 import { useGetFixtureByIdQuery } from "../services/footballApi";
 import { useParams, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
-import MatchDetails from "../components/MatchDetails";
-import Odds from "../components/Odds";
-import HeadToHead from "../components/HeadToHead";
-import Table from "../components/Table";
+import { MatchDetails, Odds, HeadToHead, Table } from "../components";
 
 const Match = () => {
   let { id } = useParams();

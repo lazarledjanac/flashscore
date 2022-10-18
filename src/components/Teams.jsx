@@ -1,17 +1,16 @@
 import React from "react";
-import { AiFillStar } from "react-icons/ai";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 
 const Teams = () => {
   return (
     <div className="leagues">
-      <AiFillStar /> <text>My Teams</text>
+      <p>
+        <AiFillStar /> My Teams
+      </p>
       <hr />
-      <div>
-        <p>
-          <AiOutlinePlus /> Add New Team
-        </p>
-      </div>
+      <center>
+        <AiOutlinePlus /> Add New Team
+      </center>
     </div>
   );
 };

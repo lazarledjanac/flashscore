@@ -1,17 +1,44 @@
+$boxshadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 body {
   margin: 0;
   background-color: rgb(240, 240, 240);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: Arial, Helvetica, sans-serif;
   // cursor: pointer;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-box {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: fit-content;
+  width: fit-content;
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: $boxshadow;
+  z-index: 101;
+  border-radius: 10px;
+  padding: 20px;
 }
 .container {
   display: grid;
@@ -23,10 +50,12 @@ code {
     background-color: white;
     border-radius: 15px;
     padding: 10px;
+    box-shadow: $boxshadow;
     .buttons-container {
       display: flex;
       flex-direction: row;
       button {
+        box-shadow: $boxshadow;
         height: 25px;
         margin-right: 8px;
         border-radius: 5px;
@@ -38,20 +67,40 @@ code {
       .active {
         color: white;
         background-color: black;
-        border: 1px solid white;
+        // border: 1px solid white;
       }
       .date {
+        display: flex;
         height: 25px;
         margin-left: auto;
         width: fit-content;
         border: 1px solid gray;
         border-radius: 5px;
+        strong {
+          margin-top: 0.6vh;
+          font-weight: 700;
+        }
         .date-buttons {
           margin: 2px;
           padding-top: 2px;
         }
       }
     }
+  }
+}
+.leagues {
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  height: fit-content;
+  padding-top: 0.5vh;
+  padding-bottom: 1vh;
+  margin-right: 1vw;
+  box-shadow: $boxshadow;
+  p {
+    margin-left: 1vw;
+    font-size: 1.3rem;
+    font-weight: bold;
   }
 }
 .game-league {
@@ -195,6 +244,8 @@ code {
   height: auto;
   padding: 2vh 0;
   background-color: white;
+  border-radius: 10px;
+  box-shadow: $boxshadow;
 }
 .match-summary {
   width: 90%;
@@ -208,6 +259,7 @@ code {
     flex: 1;
     color: gray;
     padding: 0 1vw;
+    margin-top: 2.5px;
   }
 }
 .event-home {
@@ -279,9 +331,10 @@ code {
   height: auto;
   background-color: white;
   border-radius: 15px;
-  padding-left: 2vw;
-  padding-right: 2vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
   padding-bottom: 3vh;
+  box-shadow: $boxshadow;
   div {
     margin-top: 2vh;
   }
@@ -344,12 +397,13 @@ code {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-  width: 100%;
-  height: 10vh;
-  border: 1px solid;
+  width: 49vw;
+  height: 8vh;
+  border: 1px solid gray;
   border-radius: 10px;
   background-color: white;
   padding-bottom: 2.5vh;
+  box-shadow: $boxshadow;
   div {
     margin-left: 1vw;
   }
@@ -363,20 +417,22 @@ code {
   display: flex;
   width: 100%;
   flex-direction: column;
-
-  border: 1px dashed gray;
+  box-shadow: $boxshadow;
   border-radius: 10px;
   background-color: white;
+  margin-top: 5px;
   table,
   th,
   td {
     text-align: center;
     span {
       width: 30px;
-      height: 22px;
+      height: 20px;
       border-radius: 4px;
       text-align: center;
       margin-left: 1vw;
+      padding-top: 5px;
+      margin-top: 2px;
     }
   }
   tr:nth-child(even) {
@@ -410,6 +466,7 @@ code {
   border-radius: 5px;
   margin-top: 14vh;
   margin-left: 10vw;
+  box-shadow: $boxshadow;
   div {
     width: 100%;
     text-align: center;
@@ -506,13 +563,19 @@ code {
 .player-container {
   display: flex;
   justify-content: space-between;
-  display: flex;
   width: 40vw;
   height: fit-content;
   background-color: white;
   margin-top: 3vh;
   border-radius: 10px;
   padding: 1vw;
+  box-shadow: $boxshadow;
+  b {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
 }
 .player {
   display: flex;
@@ -539,12 +602,14 @@ code {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   img {
     width: 100px;
     height: 100px;
   }
 }
 .player-statistics {
+  box-shadow: $boxshadow;
   display: flex;
   flex-direction: column;
   width: 40vw;
@@ -609,4 +674,104 @@ code {
   background-color: white;
   border-radius: 10px;
   padding: 1vw;
+}
+.yellowcard {
+  width: 1vw;
+  height: 2.5vh;
+  background-color: rgb(227, 227, 18);
+  margin: auto 0.5vw;
+}
+.search-box {
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  height: 40vh;
+  color: gray;
+  div {
+    display: flex;
+  }
+  #search-bar {
+    margin: 2vh auto;
+    width: 60%;
+    height: 5vh;
+    // border: 1px solid gray;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  b {
+    flex: 1;
+    font-size: large;
+  }
+  strong {
+    color: gray;
+  }
+  p {
+    text-align: center;
+  }
+  input[type="text"] {
+    width: 100%;
+    height: 86%;
+  }
+  select {
+    width: fit-content;
+    height: 100%;
+  }
+  button {
+    height: 100%;
+    width: 40px;
+    padding-top: 5px;
+    font-size: larger;
+  }
+}
+.search-item {
+  display: flex;
+  width: 80%;
+  height: fit-content;
+  padding-right: 1vw;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  img {
+    width: 60px;
+    height: 60px;
+    margin-right: 1vw;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    font-size: smaller;
+    flex: 1;
+  }
+}
+#coach {
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding: 10px;
+  img {
+    width: 80px;
+    height: 80px;
+  }
+}
+.coach-table {
+  border-collapse: collapse;
+  vertical-align: center;
+  text-align: left;
+  tr,
+  th,
+  td {
+    padding-left: 2vw;
+    vertical-align: middle;
+    img,
+    b {
+      vertical-align: middle;
+    }
+    padding: 5px;
+  }
+  tr:hover {
+    background-color: lightgray;
+    th {
+      background-color: white;
+    }
+  }
 }

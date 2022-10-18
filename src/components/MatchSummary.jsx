@@ -29,48 +29,43 @@ const MatchSummary = ({ id }) => {
         <div className={className}>
           <b>
             {match?.events[event]?.time.elapsed}'
-            {stoppageTime && "+" + stoppageTime + "'"}{" "}
+            {stoppageTime && "+" + stoppageTime + "'"}
           </b>
-          <div className="icon" style={{ paddingTop: "0.5vh" }}>
-            <BiFootball />
-          </div>
+          &nbsp;
+          <BiFootball />
           <b
             onClick={() =>
               navigate(`/player/${match?.events[event]?.player?.id}`)
             }
           >
-            {" "}
-            {match?.events[event]?.player?.name}
+            &nbsp;
+            {match?.events[event]?.player?.name}&nbsp;
           </b>
-          <text>{assist && "(" + assist + ")"} </text>
+          <text
+            onClick={() =>
+              navigate(`/player/${match?.events[event]?.assist?.id}`)
+            }
+          >
+            {assist && "(" + assist + ")"}{" "}
+          </text>
         </div>
       );
     if (yellowCard)
       return (
         <div className={className}>
-          <text>
-            {match?.events[event]?.time.elapsed}'
-            {stoppageTime && "+" + stoppageTime + "'"}{" "}
-          </text>
-          <div className="icon">
-            <div
-              style={{
-                width: "40%",
-                height: "2vh",
-                backgroundColor: "rgb(227, 227, 18)",
-                margin: "0.5vh 0",
-              }}
-            ></div>
-          </div>
+          {match?.events[event]?.time.elapsed}'
+          {stoppageTime && "+" + stoppageTime + "'"}{" "}
+          <div className="yellowcard"></div>
           <text
             onClick={() =>
               navigate(`/player/${match?.events[event]?.player?.id}`)
             }
           >
-            {" "}
             {match?.events[event]?.player?.name}
           </text>
-          <text>{cardDescription && "(" + cardDescription + ")"}</text>
+          &nbsp;
+          {cardDescription && "(" + cardDescription + ")"}
+          &nbsp;
         </div>
       );
     if (redCard)
@@ -80,25 +75,17 @@ const MatchSummary = ({ id }) => {
             {match?.events[event]?.time.elapsed}'
             {stoppageTime && "+" + stoppageTime + "'"}{" "}
           </text>
-          <div className="icon">
-            <div
-              style={{
-                width: "40%",
-                height: "2vh",
-                backgroundColor: "red",
-                margin: "0.5vh 0",
-              }}
-            ></div>
-          </div>
+          <div className="yellowcard" style={{ backgroundColor: "red" }}></div>
           <text
             onClick={() =>
               navigate(`/player/${match?.events[event]?.player?.id}`)
             }
           >
-            {" "}
             {match?.events[event]?.player?.name}
           </text>
-          <text>{cardDescription && "(" + cardDescription + ")"}</text>
+          &nbsp;
+          {cardDescription && "(" + cardDescription + ")"}
+          &nbsp;
         </div>
       );
     if (substitution)
@@ -106,17 +93,17 @@ const MatchSummary = ({ id }) => {
         <div className={className}>
           <text>
             {match?.events[event]?.time.elapsed}'
-            {stoppageTime && "+" + stoppageTime + "'"}{" "}
+            {stoppageTime && "+" + stoppageTime + "'"}&nbsp;
           </text>
-          <div className="icon" style={{ paddingTop: "0.5vh" }}>
-            <TbSwitchHorizontal />
-          </div>
+          {/* <div className="icon" style={{ paddingTop: "0.5vh" }}> */}
+          <TbSwitchHorizontal />
+          {/* </div> */}
           <text
             onClick={() =>
               navigate(`/player/${match?.events[event]?.assist?.id}`)
             }
           >
-            {" "}
+            &nbsp;
             {match?.events[event]?.assist?.name}
           </text>
           <text
@@ -124,8 +111,7 @@ const MatchSummary = ({ id }) => {
               navigate(`/player/${match?.events[event]?.player?.id}`)
             }
           >
-            {" "}
-            ({match?.events[event]?.player?.name})
+            &nbsp; ({match?.events[event]?.player?.name})
           </text>
         </div>
       );

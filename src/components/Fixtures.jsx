@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../index.scss";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { BsCalendar3 } from "react-icons/bs";
-import Loader from "./Loader";
+import { Loader, Fixture } from "../components";
 import {
   useGetFixturesByDateQuery,
   useGetLiveFixturesQuery,
@@ -10,7 +10,6 @@ import {
   useGetNextFixturesQuery,
 } from "../services/footballApi";
 import { DateTime } from "luxon";
-import Fixture from "./Fixture";
 
 const Fixtures = () => {
   const now = DateTime.now();
@@ -19,6 +18,7 @@ const Fixtures = () => {
   const { data: fixturesList, isFetching } = useGetFixturesByDateQuery(
     date.toFormat("y-LL-dd")
   );
+
   const { data: liveFixturesList } = useGetLiveFixturesQuery();
   const { data: finishedFixturesList } = useGetPreviousFixturesQuery();
   const { data: upcomingFixturesList } = useGetNextFixturesQuery();
@@ -78,7 +78,7 @@ const Fixtures = () => {
             }}
           />
           <BsCalendar3 className="date-buttons" />
-          <h7>{date.toFormat("dd / LL ccc")}</h7>
+          <strong>{date.toFormat("dd / LL ccc")}</strong>
           <IoIosArrowForward
             className="date-buttons"
             onClick={() => {

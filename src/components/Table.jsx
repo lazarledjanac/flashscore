@@ -61,7 +61,12 @@ const Table = ({
       );
     }
     const form = (
-      <td style={{ display: "flex", justifyContent: "center" }}>
+      <td
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         {spans.map((span) => span)}
       </td>
     );
@@ -77,7 +82,7 @@ const Table = ({
       >
         <td style={style}>{standings[i]?.rank}</td>
         <td
-          style={{ textAlign: "left", paddingLeft: "3vw", width: "30%" }}
+          style={{ textAlign: "left", paddingLeft: "1vw", width: "30%" }}
           onClick={() => {
             navigate(`/standings/${leagueId}/teams/${standings[i]?.team?.id}`);
           }}

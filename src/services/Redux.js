@@ -4,7 +4,7 @@ const initialState = {
   id: 0,
 };
 
-export const idSlice = createSlice({
+export const reduxSlice = createSlice({
   name: "id",
   initialState,
   reducers: {
@@ -13,5 +13,5 @@ export const idSlice = createSlice({
     },
   },
 });
-export const { setId } = idSlice.actions;
-export default idSlice.reducer;
+export const { setId } = reduxSlice.actions;
+export default reduxSlice.reducer;

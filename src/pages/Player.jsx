@@ -5,8 +5,7 @@ import {
   useGetCountryQuery,
   useGetTransfersByPlayerIdQuery,
 } from "../services/footballApi";
-import PlayerStats from "../components/PlayerStats";
-import Loader from "../components/Loader";
+import { PlayerStats, Loader, Achievements } from "../components";
 
 const Player = () => {
   const { playerId } = useParams();
@@ -154,7 +153,7 @@ const Player = () => {
           />
         </div>
       </div>
-      <div className="details">
+      <div className="details" style={{ margin: "2vh 0 " }}>
         <button
           className={display === "statistics" ? "active" : null}
           onClick={() => setDisplay("statistics")}
@@ -167,9 +166,20 @@ const Player = () => {
         >
           Transfers
         </button>
+        <button
+          className={display === "achievements" ? "active" : null}
+          onClick={() => setDisplay("achievements")}
+        >
+          Achievements
+        </button>
       </div>
       {display === "statistics" && <Statistics />}
       {display === "transfers" && <Transfers />}
+      {display === "achievements" && (
+        <div className="player-statistics">
+          <Achievements playerId={playerId} />
+        </div>
+      )}
     </center>
   );
 };

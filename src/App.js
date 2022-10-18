@@ -1,10 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./layout/Header";
-import Index from "./pages/Index";
-import Match from "./pages/Match";
-import Team from "./pages/Team";
-import Standings from "./pages/Standings";
-import Player from "./pages/Player";
+import { IndexPage, Match, Team, Standings, Player, Coach } from "./pages";
 import "./index.scss";
 
 function App() {
@@ -12,7 +8,7 @@ function App() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<IndexPage />} />
         <Route path="/fixture/:id" element={<Match />} />
         <Route path="/teams/:teamId/fixture/:id" element={<Match />} />
         <Route path="/standings/:leagueId/fixture/:id" element={<Match />} />
@@ -25,6 +21,7 @@ function App() {
         <Route path="/standings/:leagueId/teams/:teamId" element={<Team />} />
         <Route path="/standings/:leagueId" element={<Standings />} />
         <Route path="/player/:playerId" element={<Player />} />
+        <Route path="/coach/:coachId" element={<Coach />} />
       </Routes>
     </BrowserRouter>
   );

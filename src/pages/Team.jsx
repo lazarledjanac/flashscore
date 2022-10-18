@@ -8,10 +8,7 @@ import {
   useGetSquadByTeamIdQuery,
 } from "../services/footballApi";
 import { IoIosArrowBack } from "react-icons/io";
-import Results from "../components/Results";
-import UpcomingFixtures from "../components/UpcomingFixtures";
-import Loader from "../components/Loader";
-import Table from "../components/Table";
+import { UpcomingFixtures, Table, Loader, Results } from "../components";
 import { DateTime } from "luxon";
 
 const Team = () => {

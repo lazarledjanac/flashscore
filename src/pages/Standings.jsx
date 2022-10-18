@@ -11,8 +11,7 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
 import { IoIosArrowBack } from "react-icons/io";
-import Loader from "../components/Loader";
-import Table from "../components/Table";
+import { Loader, Table } from "../components";
 
 const Standings = () => {
   const navigate = useNavigate();
@@ -31,6 +30,9 @@ const Standings = () => {
     useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-1);
 
   console.log(league);
+  console.log(
+    useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-1)
+  );
 
   const Leagues = () => {
     const { data: leagues, isFetching } = useGetLeagueByCountryNameQuery(
@@ -180,7 +182,8 @@ const Standings = () => {
     for (let i = currentRound; i <= leagueRounds; i++) {
       matchdays[i] = i;
     }
-    console.log(matchdays);
+    console.log(currentRound);
+
     const Fixture = ({ matchday }) => {
       const { data: results, isFetching } =
         useGetResultsByRoundAndLeagueIdQuery({

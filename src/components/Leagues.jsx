@@ -1,5 +1,5 @@
 import React from "react";
-import { AiFillStar } from "react-icons/ai";
+import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 import { useGetLeagueByIdQuery } from "../services/footballApi";
 import { useNavigate } from "react-router-dom";
 
@@ -33,11 +33,18 @@ const League = ({ leagueId }) => {
 const Leagues = () => {
   return (
     <div className="leagues">
-      <AiFillStar /> <text>My Leagues</text>
+      <p>
+        <AiFillStar />
+        My Leagues
+      </p>
       <hr />
       {leagues.map((league) => (
         <League leagueId={league} />
       ))}
+      <hr />
+      <center>
+        <AiOutlinePlus /> Add New League
+      </center>
     </div>
   );
 };
