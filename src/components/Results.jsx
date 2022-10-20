@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   useGetTeamByIdQuery,
   useGetPreviousFixturesByTeamIdQuery,
@@ -17,6 +17,9 @@ const Results = ({ teamId, leagueId, last }) => {
       ?.response[game];
     const team = useGetTeamByIdQuery(teamId)?.data?.response[0]?.team;
 
+    const [navigation, setNavigation] = useState(
+      `/fixture/${match?.fixture?.id}`
+    );
     const isHome = match?.teams?.home?.name === team?.name;
     const victory = { backgroundColor: "lightgreen" };
     const defeat = { backgroundColor: "rgb(255, 102, 102)" };
@@ -41,16 +44,34 @@ const Results = ({ teamId, leagueId, last }) => {
       <div
         className="lastFixtures"
         style={outcome}
-        onClick={() => navigate(`/fixture/${match?.fixture?.id}`)}
+        onClick={() => navigate(navigation)}
       >
         <div>{DateTime.fromISO(match?.fixture?.date).toFormat("dd-LL-y")}</div>
-        <div style={{ width: "20vw" }}>
+        <div id="league">
           <img src={match?.league?.logo} width="40px" height="40px" alt="" />
-          {match?.league?.name}
+          <b>{match?.league?.name}</b>
         </div>
         <div style={{ flex: 3 }}>
-          <div style={isHome ? bold : {}}>{match?.teams?.home?.name}</div>
-          <div style={!isHome ? bold : {}}>{match?.teams?.away?.name}</div>
+          <div
+            style={isHome ? bold : {}}
+            onMouseEnter={() =>
+              setNavigation(`/teams/${match?.teams?.home?.id}`)
+            }
+            onMouseLeave={() => setNavigation(`/fixture/${match?.fixture?.id}`)}
+            onClick={() => (!isHome ? navigate(navigation) : null)}
+          >
+            {match?.teams?.home?.name}
+          </div>
+          <div
+            style={!isHome ? bold : {}}
+            onMouseEnter={() =>
+              setNavigation(`/teams/${match?.teams?.away?.id}`)
+            }
+            onMouseLeave={() => setNavigation(`/fixture/${match?.fixture?.id}`)}
+            onClick={() => (isHome ? navigate(navigation) : null)}
+          >
+            {match?.teams?.away?.name}
+          </div>
         </div>
         <div style={{ marginRight: "2vw" }}>
           <div>{match?.goals?.home}</div>

@@ -13,7 +13,6 @@ const League = ({ leagueId }) => {
   return (
     <div
       key={leagueId}
-      style={{ padding: "1vh" }}
       onClick={() => {
         navigate(`/standings/${leagueId}`);
       }}

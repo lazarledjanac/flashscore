@@ -19,21 +19,18 @@ const Table = ({
       season,
       leagueId,
     })?.data?.response[0]?.league?.standings[0];
-    console.log(standings[i]?.description);
     const description = standings[i]?.description;
     const relegation =
       description && description.substring(0, 10) === "Relegation";
     const UCL =
       description &&
       description.substring(0, 28) === "Promotion - Champions League";
-    console.log(description && description.substring(0, 24));
     const UEL =
       description &&
       description.substring(0, 25) === "Promotion - Europa League";
     const UECL =
       description &&
       description.substring(0, 36) === "Promotion - Europa Conference League";
-    console.log(relegation);
     let style;
     if (relegation) style = { backgroundColor: "darkred", color: "white" };
     else if (UCL)
@@ -82,7 +79,12 @@ const Table = ({
       >
         <td style={style}>{standings[i]?.rank}</td>
         <td
-          style={{ textAlign: "left", paddingLeft: "1vw", width: "30%" }}
+          style={{
+            textAlign: "left",
+            paddingLeft: "1vw",
+            width: "30%",
+            cursor: "pointer",
+          }}
           onClick={() => {
             navigate(`/standings/${leagueId}/teams/${standings[i]?.team?.id}`);
           }}

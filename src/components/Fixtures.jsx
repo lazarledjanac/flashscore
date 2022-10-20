@@ -41,7 +41,7 @@ const Fixtures = () => {
             setFixtures("all");
           }}
         >
-          All
+          ALL
         </button>
         <button
           type="button"
@@ -50,7 +50,7 @@ const Fixtures = () => {
             setFixtures("live");
           }}
         >
-          Live
+          LIVE
         </button>
         <button
           type="button"
@@ -59,7 +59,7 @@ const Fixtures = () => {
             setFixtures("finished");
           }}
         >
-          Finished
+          STARTED/PLAYED
         </button>
         <button
           type="button"
@@ -68,7 +68,7 @@ const Fixtures = () => {
             setFixtures("upcoming");
           }}
         >
-          Scheduled
+          SCHEDULED
         </button>
         <div className="date">
           <IoIosArrowBack

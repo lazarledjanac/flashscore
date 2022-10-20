@@ -27,11 +27,11 @@ const UpcomingFixtures = ({ teamId, leagueId, next }) => {
         <div>
           {DateTime.fromISO(match?.fixture?.date).toFormat("dd-LL-y T")}
         </div>
-        <div style={{ width: "20vw" }}>
-          <img src={match?.league?.logo} width="20px" height="30px" alt="" />
-          {match?.league?.name}
+        <div id="league">
+          <img src={match?.league?.logo} width="30px" height="30px" alt="" />
+          <b>{match?.league?.name}</b>
         </div>
-        <div style={{ marginRight: "5%" }}>
+        <div style={{ marginRight: "5%", flex: 3 }}>
           <div style={isHome ? bold : {}}>{match?.teams?.home?.name}</div>
           <div style={!isHome ? bold : {}}>{match?.teams?.away?.name}</div>
         </div>

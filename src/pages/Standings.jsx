@@ -329,7 +329,7 @@ const Standings = () => {
         </h1>
         <Leagues />
         <div>
-          <div style={{ display: "flex", marginLeft: "15vw" }}>
+          <div style={{ display: "flex", marginLeft: "7vw", marginTop: "1vh" }}>
             <img src={league?.logo} alt="" width="70px" height="70px" />
             <h1>
               {league?.name} {league?.season}/{league?.season + 1}

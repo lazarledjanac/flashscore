@@ -17,3 +17,6 @@ export { default as Table } from "./Table";
 export { default as Teams } from "./Teams";
 export { default as UpcomingFixtures } from "./UpcomingFixtures";
 export { default as Achievements } from "./Achievements";
+export { default as LoginBox } from "./LoginBox";
+export { default as LoginForm } from "./LoginForm";
+export { default as SignUpForm } from "./SignUpForm";

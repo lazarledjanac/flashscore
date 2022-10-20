@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../index.scss";
 import { AiOutlineStar } from "react-icons/ai";
 import { DateTime } from "luxon";
@@ -9,11 +9,15 @@ const Fixture = ({ game }) => {
 
   const halftimeScoreHome = game?.score?.halftime?.home;
   const halftimeScoreAway = game?.score?.halftime?.away;
+
+  const [navigation, setNavigation] = useState(`/fixture/${game.fixture.id}`);
+
+  console.log(game);
   return (
     <div
       className="game-container"
       onClick={() => {
-        navigate(`/fixture/${game.fixture.id}`);
+        navigate(navigation);
       }}
       key={game.fixture.id}
     >
@@ -29,13 +33,31 @@ const Fixture = ({ game }) => {
           {DateTime.fromISO(game?.fixture?.date).toFormat("T")}
         </div>
         <div className="teams-container">
-          <div>
+          <div className="game-team">
             <img src={game?.teams?.home?.logo} className="img" />
-            {game?.teams?.home?.name}
+            <strong
+              style={{ fontWeight: "normal" }}
+              onClick={() => navigate(navigation)}
+              onMouseEnter={() =>
+                setNavigation(`/teams/${game?.teams?.home?.id}`)
+              }
+              onMouseLeave={() => setNavigation(`/fixture/${game.fixture.id}`)}
+            >
+              {game?.teams?.home?.name}
+            </strong>
           </div>
-          <div>
+          <div className="game-team">
             <img src={game?.teams?.away?.logo} className="img" />
-            {game?.teams?.away?.name}
+            <strong
+              style={{ fontWeight: "normal", width: "fit-content" }}
+              onClick={() => navigate(navigation)}
+              onMouseEnter={() =>
+                setNavigation(`/teams/${game?.teams?.away?.id}`)
+              }
+              onMouseLeave={() => setNavigation(`/fixture/${game.fixture.id}`)}
+            >
+              {game?.teams?.away?.name}
+            </strong>
           </div>
         </div>
         <div className="score_container">
@@ -54,6 +76,28 @@ const Fixture = ({ game }) => {
             {halftimeScoreAway != null && "(" + halftimeScoreAway + ")"}
           </div>
         </div>
+        {game?.fixture?.status?.elapsed != null &&
+          game?.fixture?.status?.elapsed < 90 && (
+            <div className="live-game">
+              <small
+                style={{
+                  marginLeft: "auto",
+                }}
+              >
+                {game?.fixture?.status?.elapsed + "'"}
+              </small>
+              <div
+                id="div"
+                style={{
+                  marginLeft: "auto",
+                  backgroundColor: "red",
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "5px",
+                }}
+              ></div>
+            </div>
+          )}
       </div>
     </div>
   );

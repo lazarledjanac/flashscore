@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { BsXLg, BsStar } from "react-icons/bs";
 import { AiOutlineSearch } from "react-icons/ai";
 import {
@@ -8,6 +7,8 @@ import {
   useGetLeagueBySearchTermQuery,
 } from "../services/footballApi";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../components";
+import Loader from "./Loader";
 
 const SearchBox = ({ close }) => {
   const navigate = useNavigate();
@@ -22,11 +23,12 @@ const SearchBox = ({ close }) => {
   }, [type]);
 
   const TeamSearchResults = () => {
-    const results = useGetTeamBySearchTermQuery(term);
+    const { data: results, isFetching } = useGetTeamBySearchTermQuery(term);
     console.log(results);
     if (term.length < 3) return;
-    if (!results?.data?.response) return <p>No results for "{term}"</p>;
-    return results?.data?.response.map((res) => (
+    if (isFetching) return <Loader />;
+    if (!results?.response) return <p>No results for "{term}"</p>;
+    return results?.response.map((res) => (
       <>
         <div
           className="search-item"
@@ -42,7 +44,7 @@ const SearchBox = ({ close }) => {
           </div>
           <BsStar />
         </div>
-        <hr width="90%" />
+        <hr width="80%" />
       </>
     ));
   };
@@ -67,7 +69,7 @@ const SearchBox = ({ close }) => {
           </div>
           <BsStar />
         </div>
-        <hr width="90%" />
+        <hr width="80%" />
       </>
     ));
   };
@@ -125,6 +127,7 @@ const SearchBox = ({ close }) => {
         <button onClick={() => setTerm(termRef.current.value)}>
           <AiOutlineSearch />
         </button>
+        <hr />
       </div>
       {term.length < 3 && <p>Please type at least 3 characters.</p>}
       {type === "teams" && <TeamSearchResults />}

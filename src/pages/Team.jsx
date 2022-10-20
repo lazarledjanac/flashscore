@@ -10,16 +10,11 @@ import {
 import { IoIosArrowBack } from "react-icons/io";
 import { UpcomingFixtures, Table, Loader, Results } from "../components";
 import { DateTime } from "luxon";
+import { useEffect } from "react";
 
 const Team = () => {
   const { id, teamId, leagueId } = useParams();
   const navigate = useNavigate();
-
-  let navigation = id
-    ? `/fixture/${id}`
-    : leagueId
-    ? `/standings/${leagueId}`
-    : `/`;
 
   const team = useGetTeamByIdQuery(teamId)?.data?.response[0]?.team;
   const stadium = useGetTeamByIdQuery(teamId)?.data?.response[0]?.venue;
@@ -167,14 +162,13 @@ const Team = () => {
     );
   };
   const [content, setContent] = useState("info");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  });
   return (
     <div style={{ display: "flex" }}>
-      <h1
-        style={{ marginLeft: "2vw" }}
-        onClick={() => {
-          navigate(navigation);
-        }}
-      >
+      <h1 style={{ marginLeft: "2vw" }}>
         <IoIosArrowBack />
       </h1>
       <div className="team">

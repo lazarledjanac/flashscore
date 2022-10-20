@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsStar } from "react-icons/bs";
 import { DateTime } from "luxon";
 import { useGetFixtureByIdQuery } from "../services/footballApi";
@@ -15,6 +15,7 @@ const Match = () => {
   const halfTime = match?.score?.halftime;
   const extraTime = played && match?.score?.extratime?.home != null;
   const penalties = played && match?.score?.penalty.home != null;
+  const date = DateTime.fromISO(match?.fixture?.date);
 
   let homeNameColor = !match?.teams?.home?.winner ? "gray" : "black";
   let awayNameColor = !match?.teams?.away?.winner ? "gray" : "black";
@@ -24,11 +25,16 @@ const Match = () => {
   console.log(match);
 
   const year = DateTime.now().year;
-  const [season, setSeason] = useState(year);
 
   const [display, setDisplay] = useState();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  });
   const Standings = () => {
+    const tableYear = DateTime.fromISO(match?.fixture?.date).year;
+    const endOfTheSeason = DateTime.fromISO(`${tableYear}-07-01`);
+    let season = endOfTheSeason > date ? tableYear - 1 : tableYear;
     return (
       <div style={{ width: "50vw", margin: "auto" }}>
         <Table
