@@ -6,7 +6,7 @@ import {
 import { DateTime } from "luxon";
 import { useNavigate } from "react-router-dom";
 
-const Results = ({ teamId, leagueId, last }) => {
+const Results = ({ teamId, last }) => {
   const navigate = useNavigate();
   const length = useGetPreviousFixturesByTeamIdQuery({ teamId, last })?.data
     ?.response.length;

@@ -24,8 +24,6 @@ const Match = () => {
   const awayId = match?.teams?.away?.id;
   console.log(match);
 
-  const year = DateTime.now().year;
-
   const [display, setDisplay] = useState();
 
   useEffect(() => {
@@ -121,7 +119,6 @@ const Match = () => {
         <BsStar style={{ paddingTop: "35px" }} />
       </div>
       <hr style={{ marginTop: "10vh", width: "50vw" }} />
-
       <div className="details">
         {played && (
           <button

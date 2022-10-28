@@ -2,13 +2,12 @@ import React from "react";
 import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 import { useGetLeagueByIdQuery } from "../services/footballApi";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
 import "../index.scss";
-
-const leagues = [39, 78, 140, 61, 135, 88];
 
 const League = ({ leagueId }) => {
   const navigate = useNavigate();
+
   const league = useGetLeagueByIdQuery(leagueId)?.data?.response[0]?.league;
   return (
     <div
@@ -30,6 +29,8 @@ const League = ({ leagueId }) => {
 };
 
 const Leagues = () => {
+  const dispatch = useDispatch();
+  const { favoriteLeagues } = useSelector((store) => store.redux);
   return (
     <div className="leagues">
       <p>
@@ -37,7 +38,7 @@ const Leagues = () => {
         My Leagues
       </p>
       <hr />
-      {leagues.map((league) => (
+      {favoriteLeagues.map((league) => (
         <League leagueId={league} />
       ))}
       <hr />

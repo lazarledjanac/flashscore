@@ -12,9 +12,18 @@ import { useParams, useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
 import { IoIosArrowBack } from "react-icons/io";
 import { Loader, Table } from "../components";
+import { BsStar, BsStarFill } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addNewFavoriteLeague,
+  removeFromFavoriteLeagues,
+} from "../services/Redux";
 
 const Standings = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isFavoriteLeague } = useSelector((store) => store.redux);
+  // pomocu FIND metode odrediti da li je ID lige u Favorites i na osnovu toga dodeliti boolean u Star state
   const { leagueId } = useParams();
 
   const year = DateTime.now().year;
@@ -27,11 +36,11 @@ const Standings = () => {
   const league = useGetStandingsBySeasonAndLeagueIdQuery({ season, leagueId })
     ?.data?.response[0].league;
   const currentRound =
-    useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-1);
+    useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-2);
 
   console.log(league);
   console.log(
-    useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-1)
+    useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-2)
   );
 
   const Leagues = () => {
@@ -39,10 +48,6 @@ const Standings = () => {
       league?.country
     );
     console.log(leagues);
-    let array = [];
-    for (let i = 0; i < leagues?.results; i++) {
-      array[i] = i;
-    }
     if (isFetching) return <Loader />;
     return (
       <div className="national-leagues">
@@ -57,14 +62,16 @@ const Standings = () => {
           <h4>{league?.country}</h4>
         </div>
         <hr width="100%" />
-        {array.map((i) => (
+        {leagues?.response?.map((res) => (
           <div
             onClick={() => {
-              if (leagues?.response[i]?.league?.type === "League")
-                navigate(`/standings/${leagues?.response[i]?.league?.id}`);
+              if (res?.league?.type === "League") {
+                navigate(`/standings/${res?.league?.id}`);
+                setDisplay("table");
+              }
             }}
           >
-            {leagues?.response[i]?.league?.name}
+            {res?.league?.name}
           </div>
         ))}
       </div>
@@ -72,12 +79,10 @@ const Standings = () => {
   };
   const Results = () => {
     let matchdays = [];
-    let j = 0;
-    for (let i = currentRound - 1; i > 0; i--) {
-      matchdays[j] = i;
-      j++;
+    for (let i = 1; i < currentRound; i++) {
+      matchdays[i] = i;
     }
-
+    console.log(matchdays);
     const Result = ({ matchday }) => {
       const results = useGetResultsByRoundAndLeagueIdQuery({
         leagueId,
@@ -89,69 +94,51 @@ const Standings = () => {
       }).isFetching;
 
       console.log(results);
-      let array = [];
-      for (let i = 0; i < results?.results; i++) {
-        array[i] = i;
-      }
       if (isFetching) return <Loader />;
       return (
         <>
-          <h1 style={{ marginLeft: "1vw" }}>Matchday {matchday}</h1>
-          {array.map((i) => (
+          {results?.response?.map((res) => (
             <div
               className="standings-results"
               onClick={() =>
-                navigate(
-                  `/standings/${leagueId}/fixture/${results?.response[i]?.fixture?.id}`
-                )
+                navigate(`/standings/${leagueId}/fixture/${res?.fixture?.id}`)
               }
             >
               <div>
-                {DateTime.fromISO(results?.response[i]?.fixture?.date).toFormat(
-                  "dd-LL-y T"
-                )}
+                {DateTime.fromISO(res?.fixture?.date).toFormat("dd-LL-y T")}
               </div>
               <div style={{ flex: 2, marginLeft: "5vw", textAlign: "left" }}>
                 <div
-                  style={
-                    results?.response[i]?.teams?.home?.winner
-                      ? { fontWeight: "bold" }
-                      : {}
-                  }
+                  style={res?.teams?.home?.winner ? { fontWeight: "bold" } : {}}
                 >
                   <img
-                    src={results?.response[i]?.teams?.home?.logo}
+                    src={res?.teams?.home?.logo}
                     alt=""
                     height="20px"
                     width="20px"
                   />
-                  {results?.response[i]?.teams?.home?.name}
+                  {res?.teams?.home?.name}
                 </div>
                 <div
-                  style={
-                    results?.response[i]?.teams?.away?.winner
-                      ? { fontWeight: "bold" }
-                      : {}
-                  }
+                  style={res?.teams?.away?.winner ? { fontWeight: "bold" } : {}}
                 >
                   <img
-                    src={results?.response[i]?.teams?.away?.logo}
+                    src={res?.teams?.away?.logo}
                     alt=""
                     height="20px"
                     width="20px"
                   />
-                  {results?.response[i]?.teams?.away?.name}
+                  {res?.teams?.away?.name}
                 </div>
               </div>
-              {results?.response[i]?.fixture?.status?.long !==
-                "Match Postponed" && (
+              {res?.fixture?.status?.long !== "Match Postponed" && (
                 <>
                   <div>
                     <div>
-                      <b>{results?.response[i]?.goals?.home}</b>
+                      <b>{res?.goals?.home}</b>
                     </div>
                     <div>
-                      <b>{results?.response[i]?.goals?.away}</b>
+                      <b>{res?.goals?.away}</b>
                     </div>
                   </div>
                   <div
@@ -161,19 +148,33 @@ const Standings = () => {
                       color: "gray",
                     }}
                   >
-                    <div>({results?.response[i]?.score?.halftime?.home})</div>
-                    <div>({results?.response[i]?.score?.halftime?.away})</div>
+                    <div>({res?.score?.halftime?.home})</div>
+                    <div>({res?.score?.halftime?.away})</div>
                   </div>
                 </>
               )}
-              {results?.response[i]?.fixture?.status?.long ===
-                "Match Postponed" && "Postponed"}
+              {res?.fixture?.status?.long === "Match Postponed" && "Postponed"}
             </div>
           ))}
+          <strong
+            style={{
+              textAlign: "center",
+              marginTop: "3vh",
+              fontSize: "1.6rem",
+            }}
+          >
+            Matchday {matchday}
+          </strong>
         </>
       );
     };
-    return matchdays.map((matchday) => <Result matchday={matchday} />);
+    return (
+      <div style={{ display: "flex", flexDirection: "column-reverse" }}>
+        {matchdays.map((matchday) => (
+          <Result matchday={matchday} />
+        ))}
+      </div>
+    );
   };
   const Fixtures = () => {
     const leagueRounds =
@@ -190,48 +191,41 @@ const Standings = () => {
           leagueId,
           round: matchday,
         });
-      let array = [];
-      for (let i = 0; i < results?.results; i++) {
-        array[i] = i;
-      }
-      console.log(array);
       if (isFetching) return <Loader />;
       return (
         <>
-          <h1 style={{ marginLeft: "1vw" }}>Matchday {matchday}</h1>
-          {array.map((i) => (
+          <h1 style={{ marginTop: "2vh", textAlign: "center" }}>
+            Matchday {matchday}
+          </h1>
+          {results?.response.map((res) => (
             <div
               className="standings-results"
               onClick={() =>
-                navigate(
-                  `/standings/${leagueId}/fixture/${results?.response[i]?.fixture?.id}`
-                )
+                navigate(`/standings/${leagueId}/fixture/${res?.fixture?.id}`)
               }
             >
               <div style={{ flex: 1 }}>
-                {DateTime.fromISO(results?.response[i]?.fixture?.date).toFormat(
-                  "dd-LL-y T"
-                )}
+                {DateTime.fromISO(res?.fixture?.date).toFormat("dd-LL-y T")}
               </div>
 
               <div style={{ flex: 1, textAlign: "left" }}>
                 <div>
                   <img
-                    src={results?.response[i]?.teams?.home?.logo}
+                    src={res?.teams?.home?.logo}
                     alt=""
                     height="20px"
                     width="20px"
                   />
-                  {results?.response[i]?.teams?.home?.name}
+                  {res?.teams?.home?.name}
                 </div>
                 <div>
                   <img
-                    src={results?.response[i]?.teams?.away?.logo}
+                    src={res?.teams?.away?.logo}
                     alt=""
                     height="20px"
                     width="20px"
                   />
-                  {results?.response[i]?.teams?.away?.name}
+                  {res?.teams?.away?.name}
                 </div>
               </div>
             </div>
@@ -245,26 +239,23 @@ const Standings = () => {
     const topscorers =
       useGetTopScorersByLeagueIdQuery(leagueId)?.data?.response;
     console.log(topscorers);
-    let array = [];
-    for (let i = 0; i < topscorers?.length; i++) {
-      array[i] = i;
-    }
-    const Row = ({ i }) => {
+
+    const Row = ({ topscorer, rank }) => {
       return (
         <tr>
-          <td>{i + 1}</td>
-          <td onClick={() => navigate(`/player/${topscorers[i]?.player?.id}`)}>
-            {topscorers[i]?.player?.name}
+          <td>{rank + 1}</td>
+          <td onClick={() => navigate(`/player/${topscorer?.player?.id}`)}>
+            {topscorer?.player?.name}
           </td>
           <td
             onClick={() =>
-              navigate(`/teams/${topscorers[i]?.statistics[0]?.team?.id}`)
+              navigate(`/teams/${topscorer?.statistics[0]?.team?.id}`)
             }
           >
-            {topscorers[i]?.statistics[0]?.team?.name}
+            {topscorer?.statistics[0]?.team?.name}
           </td>
-          <td>{topscorers[i]?.statistics[0]?.goals?.total}</td>
-          <td>{topscorers[i]?.statistics[0]?.goals?.assists || 0}</td>
+          <td>{topscorer?.statistics[0]?.goals?.total}</td>
+          <td>{topscorer?.statistics[0]?.goals?.assists || 0}</td>
         </tr>
       );
     };
@@ -278,8 +269,8 @@ const Standings = () => {
             <th>Goals</th>
             <th>Assists</th>
           </tr>
-          {array.map((i) => (
-            <Row i={i} />
+          {topscorers?.map((topscorer, index) => (
+            <Row topscorer={topscorer} rank={index} />
           ))}
         </table>
       </div>
@@ -287,32 +278,26 @@ const Standings = () => {
   };
   const Archive = () => {
     const seasons = useGetLeagueByIdQuery(leagueId)?.data?.response[0]?.seasons;
-    console.log(seasons);
-
-    let array = [];
-    let j = 0;
-    for (let i = seasons?.length - 1; i >= 0; i--) {
-      array[j] = i;
-      j++;
-    }
-    console.log(array);
     return (
       <div className="archive">
-        {array.map((i) => (
-          <h4
+        {seasons?.map((season) => (
+          <div
             onClick={() => {
-              setSeason(seasons[i]?.year);
+              setSeason(season?.year);
               setDisplay("table");
             }}
           >
-            <img src={league?.logo} alt="" /> {league?.name} {seasons[i]?.year}/
-            {seasons[i]?.year + 1}
-          </h4>
+            <img src={league?.logo} alt="" />
+            <strong>
+              {league?.name} {season?.year}/{season?.year + 1}
+            </strong>
+          </div>
         ))}
       </div>
     );
   };
 
+  const [star, setStar] = useState(isFavoriteLeague);
   const [display, setDisplay] = useState("table");
 
   if (isFetching) return <Loader />;
@@ -327,13 +312,30 @@ const Standings = () => {
         >
           <IoIosArrowBack />
         </h1>
-        <Leagues />
+        {/* <Leagues /> */}
         <div>
           <div style={{ display: "flex", marginLeft: "7vw", marginTop: "1vh" }}>
             <img src={league?.logo} alt="" width="70px" height="70px" />
             <h1>
               {league?.name} {league?.season}/{league?.season + 1}
             </h1>
+            <h2
+              style={{ margin: "auto" }}
+              onClick={() =>
+                setStar((currentState) => {
+                  if (currentState == false) {
+                    dispatch(addNewFavoriteLeague(leagueId));
+                    return true;
+                  } else {
+                    dispatch(removeFromFavoriteLeagues(leagueId));
+                    return false;
+                  }
+                })
+              }
+            >
+              {star == false && <BsStar />}
+              {star == true && <BsStarFill />}
+            </h2>
           </div>
           <div className="standings-buttons">
             <button onClick={() => setDisplay("table")}>Standings</button>

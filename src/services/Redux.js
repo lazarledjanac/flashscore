@@ -1,17 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  id: 0,
+  favoriteLeagues: [39, 78, 140, 61, 135, 88],
+  favoriteTeams: [],
+  isFavoriteLeague: true,
+  isFavoriteTeam: false,
 };
 
 export const reduxSlice = createSlice({
-  name: "id",
+  name: "redux",
   initialState,
   reducers: {
-    setId: (state, { payload }) => {
-      state.id = payload;
+    addNewFavoriteLeague: (state, { payload }) => {
+      state.favoriteLeagues.push(payload);
+    },
+    removeFromFavoriteLeagues: (state, { payload }) => {
+      state.favoriteLeagues = state.favoriteLeagues.filter(
+        (league) => league.id === payload.id
+      );
+    },
+    addNewFavoriteTeam: (state, { payload }) => {
+      state.favoriteTeams.push(payload);
     },
   },
 });
-export const { setId } = reduxSlice.actions;
+export const {
+  addNewFavoriteLeague,
+  removeFromFavoriteLeagues,
+  addNewFavoriteTeam,
+} = reduxSlice.actions;
 export default reduxSlice.reducer;

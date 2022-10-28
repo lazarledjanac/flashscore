@@ -10,7 +10,7 @@ const IndexPage = () => {
         <br />
         <Teams />
       </div>
-      <Fixtures />
+      {/* <Fixtures /> */}
     </div>
   );
 };
