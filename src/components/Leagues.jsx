@@ -1,9 +1,9 @@
-import React from "react";
+import React,{useRef} from "react";
 import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 import { useGetLeagueByIdQuery } from "../services/footballApi";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import "../index.scss";
+import { useSelector } from "react-redux";
+import {AddToFavorites,Modal} from "../components"
 
 const League = ({ leagueId }) => {
   const navigate = useNavigate();
@@ -29,8 +29,15 @@ const League = ({ leagueId }) => {
 };
 
 const Leagues = () => {
-  const dispatch = useDispatch();
   const { favoriteLeagues } = useSelector((store) => store.redux);
+  const addNewLeagueRef = useRef();
+
+  const closeAddLeagueModal = () => {
+    addNewLeagueRef.current.close();
+  };
+  const openAddLeagueModal = () => {
+    addNewLeagueRef.current.openModal();
+  };
   return (
     <div className="leagues">
       <p>
@@ -42,9 +49,12 @@ const Leagues = () => {
         <League leagueId={league} />
       ))}
       <hr />
-      <center>
+      <center onClick={openAddLeagueModal}>
         <AiOutlinePlus /> Add New League
       </center>
+      <Modal ref={addNewLeagueRef}>
+        <AddToFavorites close={closeAddLeagueModal} type="league" />
+      </Modal>
     </div>
   );
 };

@@ -20,3 +20,4 @@ export { default as Achievements } from "./Achievements";
 export { default as LoginBox } from "./LoginBox";
 export { default as LoginForm } from "./LoginForm";
 export { default as SignUpForm } from "./SignUpForm";
+export { default as AddToFavorites } from "./AddToFavorites";

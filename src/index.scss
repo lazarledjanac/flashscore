@@ -60,11 +60,15 @@ code {
         height: 25px;
         margin-right: 8px;
         border-radius: 5px;
-        border: none;
         background-color: rgb(227, 227, 227);
         color: gray;
         font-weight: bold;
+        border: 1px solid transparent;
         cursor: pointer;
+      }
+      button:hover {
+        border: 1px solid black;
+        transition: ease 200ms;
       }
       .active {
         color: white;
@@ -95,6 +99,7 @@ code {
 }
 .game-team:hover {
   text-decoration: underline;
+  transition: ease 200ms;
 }
 .leagues {
   width: 100%;
@@ -122,6 +127,7 @@ code {
   div:hover {
     background-color: rgb(240, 240, 240);
     text-decoration: underline;
+    transition: ease 200ms;
   }
 }
 .game-league {
@@ -138,6 +144,7 @@ code {
 }
 .game:hover {
   background-color: rgb(240, 240, 240);
+  transition: ease 200ms;
 }
 .teams-container {
   display: flex;
@@ -231,6 +238,7 @@ code {
   border-radius: 10px;
   background-color: black;
   color: white;
+  transition: ease 200ms;
 }
 .match-button-active {
   margin: 3vh 0.5vw;
@@ -251,6 +259,7 @@ code {
     background-color: white;
     border-radius: 10px;
     border: 2px solid lightgray;
+    font-size: 16px;
   }
   .active {
     color: white;
@@ -261,6 +270,7 @@ code {
     color: white;
     background-color: black;
     border: 1px solid white;
+    transition: ease 200ms;
   }
 }
 .match-summary-container {
@@ -345,12 +355,26 @@ code {
   div {
     margin-left: 1vw;
   }
+  #h2h-team-home {
+    padding-bottom: 0.4vh;
+  }
+  #h2h-team-home:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  #h2h-team-away {
+    padding-top: 0.4vh;
+  }
+  #h2h-team-away:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }
 .team {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 3vh 0 27vw 23vw;
+  margin: 3vh 0 25vw 25vw;
   width: 50vw;
   height: auto;
   background-color: white;
@@ -368,7 +392,8 @@ code {
   flex-direction: row;
   align-items: center;
   align-self: center;
-  margin-left: 2vw;
+  margin-left: 4vw;
+  margin-top: 2vh;
 }
 .team-details {
   display: flex;
@@ -377,27 +402,35 @@ code {
   align-items: center;
   gap: 1vw;
   button {
-    background-color: #555555;
+    background-color: black;
+    border: 1px solid transparent;
     color: white;
     padding: 5px 20px;
     text-align: center;
     font-size: 16px;
     border-radius: 10px;
     height: 5vh;
-    border: none;
     cursor: pointer;
   }
-  .active {
+  button:hover {
     background-color: white;
+    border: 1px solid black;
     color: black;
-    border: 1px solid gray;
+    transition: ease 200ms;
+  }
+  .active {
+    background-color: lightgray;
+    color: black;
+    border: 1px solid black;
   }
 }
 .odds {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  display: grid;
+  align-content: center;
   justify-content: center;
+  grid-template-columns: 5vw 5vw 5vw;
+  gap: 10px;
+  padding: 10px;
 }
 .odd {
   width: 5vw;
@@ -413,7 +446,7 @@ code {
   border: 1px solid gray;
   border-radius: 10px;
   margin: 0 0 1vw 1vw;
-  background-color: lightblue;
+  background-color: rgb(153, 214, 255);
 }
 .lastFixtures {
   display: flex;
@@ -445,18 +478,20 @@ code {
 }
 .lastFixtures:hover {
   background-color: rgb(240, 240, 240);
+  transition: ease 200ms;
 }
 .standings-container {
   display: flex;
   flex-direction: row;
   gap: 1vw;
+  margin-left: 5vw;
 }
 .standings {
   display: flex;
   width: 100%;
   flex-direction: column;
   box-shadow: $boxshadow;
-  border-radius: 10px;
+  border: 1px solid gray;
   background-color: white;
   margin-top: 5px;
   table,
@@ -483,7 +518,8 @@ code {
     background: rgba(0, 0, 0, 0.3);
   }
   tr:hover {
-    background-color: lightblue;
+    background-color: rgb(204, 224, 255);
+    transition: ease 200ms;
   }
   td:nth-child(2):hover {
     text-decoration: underline;
@@ -502,7 +538,10 @@ code {
     cursor: pointer;
   }
   button:hover {
-    box-shadow: $boxshadow;
+    color: black;
+    background-color: white;
+    transition: ease 200ms;
+    border: solid 0.5px lightgray;
   }
 }
 .national-leagues {
@@ -529,6 +568,7 @@ code {
   }
   div:hover {
     background-color: rgb(217, 217, 217);
+    transition: ease 200ms;
   }
 }
 .standings-results {
@@ -584,13 +624,16 @@ code {
     color: white;
   }
   tr:hover {
-    background-color: lightblue;
+    background-color: rgb(204, 224, 255);
+    transition: ease 200ms;
   }
   td:nth-child(2):hover {
     text-decoration: underline;
+    transition: ease 200ms;
   }
   td:nth-child(3):hover {
     text-decoration: underline;
+    transition: ease 200ms;
   }
 }
 .transfers {
@@ -636,6 +679,7 @@ code {
   }
   div:hover {
     background-color: rgb(217, 217, 217);
+    transition: ease 200ms;
   }
 }
 .player-container {
@@ -716,6 +760,10 @@ code {
     }
   }
 }
+#transfer-club:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
 .player-stats-container {
   display: grid;
   grid-template-columns: 25vw 25vw;
@@ -763,9 +811,10 @@ code {
   display: flex;
   flex-direction: column;
   width: 40vw;
-  height: 40vh;
+  height: fit-content;
   color: gray;
   padding: 20px;
+  max-height: 60vh;
   div {
     display: flex;
   }
@@ -828,6 +877,7 @@ code {
 }
 .search-item:hover {
   background-color: rgb(240, 240, 240);
+  transition: ease 200ms;
 }
 #coach {
   border: 1px solid gray;
@@ -855,6 +905,7 @@ code {
   }
   tr:hover {
     background-color: lightgray;
+    transition: ease 200ms;
     th {
       background-color: white;
     }
@@ -956,6 +1007,7 @@ code {
   }
   button:hover {
     background-color: red;
+    transition: ease 200ms;
   }
 }
 .live-game {

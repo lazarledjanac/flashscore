@@ -3,8 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   favoriteLeagues: [39, 78, 140, 61, 135, 88],
   favoriteTeams: [],
-  isFavoriteLeague: true,
-  isFavoriteTeam: false,
 };
 
 export const reduxSlice = createSlice({
@@ -16,11 +14,16 @@ export const reduxSlice = createSlice({
     },
     removeFromFavoriteLeagues: (state, { payload }) => {
       state.favoriteLeagues = state.favoriteLeagues.filter(
-        (league) => league.id === payload.id
+        (league) => league !== payload
       );
     },
     addNewFavoriteTeam: (state, { payload }) => {
       state.favoriteTeams.push(payload);
+    },
+    removeFromFavoriteTeams: (state, { payload }) => {
+      state.favoriteTeams = state.favoriteTeams.filter(
+        (team) => team !== payload
+      );
     },
   },
 });
@@ -28,5 +31,6 @@ export const {
   addNewFavoriteLeague,
   removeFromFavoriteLeagues,
   addNewFavoriteTeam,
+  removeFromFavoriteTeams,
 } = reduxSlice.actions;
 export default reduxSlice.reducer;

@@ -14,24 +14,15 @@ const Table = ({
     season,
     leagueId,
   })?.data?.response[0]?.league?.standings[0];
-  const Row = ({ i }) => {
-    const standings = useGetStandingsBySeasonAndLeagueIdQuery({
-      season,
-      leagueId,
-    })?.data?.response[0]?.league?.standings[0];
-    const description = standings[i]?.description;
-    const relegation =
-      description && description.substring(0, 10) === "Relegation";
-    const UCL =
-      description &&
-      description.substring(0, 28) === "Promotion - Champions League";
-    const UEL =
-      description &&
-      description.substring(0, 25) === "Promotion - Europa League";
-    const UECL =
-      description &&
-      description.substring(0, 36) === "Promotion - Europa Conference League";
+  const Row = ({ res }) => {
     let style;
+    const description = res?.description;
+    const relegation = description?.substring(0, 10) === "Relegation";
+    const UCL =
+      description?.substring(0, 28) === "Promotion - Champions League";
+    const UEL = description?.substring(0, 25) === "Promotion - Europa League";
+    const UECL =
+      description?.substring(0, 36) === "Promotion - Europa Conference League";
     if (relegation) style = { backgroundColor: "darkred", color: "white" };
     else if (UCL)
       style = { backgroundColor: "rgb(18, 0, 153)", color: "white" };
@@ -42,18 +33,18 @@ const Table = ({
       style = { backgroundColor: "rgb(18, 0, 153)", color: "white" };
     }
     let spans = [];
-    for (let j = 0; j < standings[i]?.form?.length; j++) {
+    for (let j = 0; j < res?.form?.length; j++) {
       spans[j] = (
         <span
           style={
-            standings[i]?.form[j] === "W"
+            res?.form[j] === "W"
               ? { backgroundColor: "lightgreen" }
-              : standings[i]?.form[j] === "L"
+              : res?.form[j] === "L"
               ? { backgroundColor: "red" }
               : { backgroundColor: "yellow" }
           }
         >
-          {standings[i]?.form[j]}
+          {res?.form[j]}
         </span>
       );
     }
@@ -70,14 +61,13 @@ const Table = ({
     return (
       <tr
         style={
-          emphasize == standings[i]?.team?.id ||
-          emphasizeGuest == standings[i]?.team?.id
-            ? { backgroundColor: "lightblue" }
+          emphasize == res?.team?.id || emphasizeGuest == res?.team?.id
+            ? { backgroundColor: "rgb(204, 224, 255)" }
             : null
         }
         onClick={() => changeState()}
       >
-        <td style={style}>{standings[i]?.rank}</td>
+        <td style={style}>{res?.rank}</td>
         <td
           style={{
             textAlign: "left",
@@ -86,31 +76,24 @@ const Table = ({
             cursor: "pointer",
           }}
           onClick={() => {
-            navigate(`/standings/${leagueId}/teams/${standings[i]?.team?.id}`);
+            navigate(`/standings/${leagueId}/teams/${res?.team?.id}`);
           }}
         >
-          <img
-            src={standings[i]?.team?.logo}
-            width="20px"
-            height="20px"
-            alt=""
-          />
-          {standings[i]?.team?.name}
+          <img src={res?.team?.logo} width="20px" height="20px" alt="" />
+          {res?.team?.name}
         </td>
-        <td>{standings[i]?.all?.played}</td>
-        <td>{standings[i]?.all?.win}</td>
-        <td>{standings[i]?.all?.draw}</td>
-        <td>{standings[i]?.all?.lose}</td>
-        <td>{standings[i]?.all?.goals?.for}</td>
-        <td>{standings[i]?.all?.goals?.against}</td>
-        <td>{standings[i]?.goalsDiff}</td>
-        <td>{standings[i]?.points}</td>
+        <td>{res?.all?.played}</td>
+        <td>{res?.all?.win}</td>
+        <td>{res?.all?.draw}</td>
+        <td>{res?.all?.lose}</td>
+        <td>{res?.all?.goals?.for}</td>
+        <td>{res?.all?.goals?.against}</td>
+        <td>{res?.goalsDiff}</td>
+        <td>{res?.points}</td>
         {form}
       </tr>
     );
   };
-  let array = [];
-  for (let i = 0; i < standings?.length; i++) array[i] = i;
   return (
     <div className="standings">
       <table>
@@ -127,8 +110,8 @@ const Table = ({
           <th>PTS</th>
           <th>Form</th>
         </tr>
-        {array.map((i) => (
-          <Row i={i} />
+        {standings?.map((res) => (
+          <Row res={res} />
         ))}
       </table>
     </div>

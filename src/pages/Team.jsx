@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BsStar } from "react-icons/bs";
+import { BsStar, BsStarFill } from "react-icons/bs";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   useGetTeamByIdQuery,
@@ -7,19 +7,25 @@ import {
   useGetLeagueByTeamIdQuery,
   useGetSquadByTeamIdQuery,
 } from "../services/footballApi";
-import { IoIosArrowBack } from "react-icons/io";
 import { UpcomingFixtures, Table, Loader, Results } from "../components";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewFavoriteTeam, removeFromFavoriteTeams } from "../services/Redux";
 
 const Team = () => {
-  const { id, teamId, leagueId } = useParams();
+  const { teamId, leagueId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { favoriteTeams } = useSelector((store) => store.redux);
+  const isFavorite = favoriteTeams.includes(parseInt(teamId));
 
   const team = useGetTeamByIdQuery(teamId)?.data?.response[0]?.team;
   const stadium = useGetTeamByIdQuery(teamId)?.data?.response[0]?.venue;
   const league = useGetLeagueByTeamIdQuery(teamId).data;
   console.log(league);
+  console.log(team);
+  const isNationalTeam = team?.national;
 
   const year = DateTime.now().year;
   const [season, setSeason] = useState(year);
@@ -27,12 +33,16 @@ const Team = () => {
   const Info = () => {
     return (
       <center>
-        <h4>Country: {team?.country}</h4>
-        <h4>City: {stadium?.city}</h4>
-        <h4>Founded: {team?.founded}</h4>
-        <h4>Stadium: {stadium?.name}</h4>
-        <h4>Stadium capacity: {stadium?.capacity}</h4>
-        <hr width="80%" />
+        {!isNationalTeam && (
+          <>
+            <h4>Country: {team?.country}</h4>
+            <h4>City: {stadium?.city}</h4>
+            <h4>Founded: {team?.founded}</h4>
+            <h4>Stadium: {stadium?.name}</h4>
+            <h4>Stadium capacity: {stadium?.capacity}</h4>
+            <hr width="80%" />
+          </>
+        )}
         <h1>Latest results:</h1>
         <Results teamId={teamId} leagueId={leagueId} last={5} />
         <hr width="80%" />
@@ -161,6 +171,7 @@ const Team = () => {
       </div>
     );
   };
+
   const [content, setContent] = useState("info");
 
   useEffect(() => {
@@ -168,17 +179,34 @@ const Team = () => {
   });
   return (
     <div style={{ display: "flex" }}>
-      <h1 style={{ marginLeft: "2vw" }}>
-        <IoIosArrowBack />
-      </h1>
       <div className="team">
         <div className="team-logo">
-          <img src={team?.logo} alt="" width="150vw" height="150vh" />
-          <div style={{ marginLeft: "1vw" }}>
-            <BsStar />
-          </div>
+          <img
+            src={team?.logo}
+            alt=""
+            width="150px"
+            height={isNationalTeam ? "100px" : "150px"}
+          />
+          <h2 style={{ marginLeft: "1vw", marginTop: "4vh" }}>
+            {!isFavorite && (
+              <BsStar
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(addNewFavoriteTeam(parseInt(teamId)));
+                }}
+              />
+            )}
+            {isFavorite && (
+              <BsStarFill
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(removeFromFavoriteTeams(parseInt(teamId)));
+                }}
+              />
+            )}
+          </h2>
         </div>
-        <h1>{team?.name}</h1>
+        <h1 style={{ marginLeft: "2vw" }}>{team?.name}</h1>
         <div className="team-details">
           <button
             onClick={() => setContent("info")}
@@ -210,12 +238,14 @@ const Team = () => {
           >
             Squad
           </button>
-          <button
-            onClick={() => setContent("transfers")}
-            className={content === "transfers" ? "active" : null}
-          >
-            Transfers
-          </button>
+          {!isNationalTeam && (
+            <button
+              onClick={() => setContent("transfers")}
+              className={content === "transfers" ? "active" : null}
+            >
+              Transfers
+            </button>
+          )}
         </div>
         <hr width="80%" />
         {content === "info" && <Info />}

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { BsStar } from "react-icons/bs";
+import { BsStar, BsStarFill } from "react-icons/bs";
 import { DateTime } from "luxon";
 import { useGetFixtureByIdQuery } from "../services/footballApi";
 import { useParams, useNavigate } from "react-router-dom";
-import { IoIosArrowBack } from "react-icons/io";
 import { MatchDetails, Odds, HeadToHead, Table } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewFavoriteTeam, removeFromFavoriteTeams } from "../services/Redux";
 
 const Match = () => {
-  let { id } = useParams();
-  let navigate = useNavigate();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { favoriteTeams } = useSelector((store) => store.redux);
 
   const match = useGetFixtureByIdQuery(id)?.data?.response[0];
   const played = match?.fixture?.status?.elapsed > 0;
@@ -22,7 +25,9 @@ const Match = () => {
 
   const homeId = match?.teams?.home?.id;
   const awayId = match?.teams?.away?.id;
-  console.log(match);
+
+  const isFavoriteHome = favoriteTeams.includes(parseInt(homeId));
+  const isFavoriteAway = favoriteTeams.includes(parseInt(awayId));
 
   const [display, setDisplay] = useState();
 
@@ -47,14 +52,6 @@ const Match = () => {
   return (
     <div>
       <div style={{ display: "-webkit-inline-flex" }}>
-        <h1
-          style={{ marginLeft: "2vw" }}
-          onClick={() => {
-            navigate(`/fixture/${id}`);
-          }}
-        >
-          <IoIosArrowBack />
-        </h1>
         <h1 style={{ marginLeft: "25vw" }}>
           {match?.league?.country}{" "}
           <img src={match?.league?.flag} width="40px" height="40px" /> :{" "}
@@ -68,7 +65,22 @@ const Match = () => {
         {match?.fixture?.venue?.name}, {match?.fixture?.venue?.city}
       </center>
       <div className="match-container">
-        <BsStar style={{ paddingTop: "35px" }} />
+        {!isFavoriteHome && (
+          <BsStar
+            style={{ paddingTop: "35px" }}
+            onClick={() => {
+              dispatch(addNewFavoriteTeam(parseInt(homeId)));
+            }}
+          />
+        )}
+        {isFavoriteHome && (
+          <BsStarFill
+            style={{ paddingTop: "35px" }}
+            onClick={() => {
+              dispatch(removeFromFavoriteTeams(parseInt(homeId)));
+            }}
+          />
+        )}
         <div
           className="match-team"
           onClick={() => {
@@ -116,7 +128,24 @@ const Match = () => {
             {match?.teams?.away?.name}
           </h2>
         </div>
-        <BsStar style={{ paddingTop: "35px" }} />
+        {!isFavoriteAway && (
+          <BsStar
+            style={{ paddingTop: "35px" }}
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(addNewFavoriteTeam(parseInt(awayId)));
+            }}
+          />
+        )}
+        {isFavoriteAway && (
+          <BsStarFill
+            style={{ paddingTop: "35px" }}
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(removeFromFavoriteTeams(parseInt(awayId)));
+            }}
+          />
+        )}
       </div>
       <hr style={{ marginTop: "10vh", width: "50vw" }} />
       <div className="details">

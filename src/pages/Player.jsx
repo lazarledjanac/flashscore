@@ -72,6 +72,7 @@ const Player = () => {
                 `/teams/${transfers?.response[0]?.transfers[i]?.teams?.out?.id}`
               );
             }}
+            id="transfer-club"
           >
             <img
               src={transfers?.response[0]?.transfers[i]?.teams?.out?.logo}
@@ -88,6 +89,7 @@ const Player = () => {
                 `/teams/${transfers?.response[0]?.transfers[i]?.teams?.in?.id}`
               );
             }}
+            id="transfer-club"
           >
             <img
               src={transfers?.response[0]?.transfers[i]?.teams?.in?.logo}

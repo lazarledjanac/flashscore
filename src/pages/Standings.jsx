@@ -10,7 +10,6 @@ import {
 } from "../services/footballApi";
 import { useParams, useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
-import { IoIosArrowBack } from "react-icons/io";
 import { Loader, Table } from "../components";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,9 +21,10 @@ import {
 const Standings = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isFavoriteLeague } = useSelector((store) => store.redux);
-  // pomocu FIND metode odrediti da li je ID lige u Favorites i na osnovu toga dodeliti boolean u Star state
   const { leagueId } = useParams();
+  const { favoriteLeagues } = useSelector((store) => store.redux);
+  const isFavorite = favoriteLeagues.includes(parseInt(leagueId));
+  console.log(isFavorite);
 
   const year = DateTime.now().year;
   const [season, setSeason] = useState(year);
@@ -37,11 +37,6 @@ const Standings = () => {
     ?.data?.response[0].league;
   const currentRound =
     useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-2);
-
-  console.log(league);
-  console.log(
-    useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-2)
-  );
 
   const Leagues = () => {
     const { data: leagues, isFetching } = useGetLeagueByCountryNameQuery(
@@ -297,21 +292,13 @@ const Standings = () => {
     );
   };
 
-  const [star, setStar] = useState(isFavoriteLeague);
+  const [star, setStar] = useState(isFavorite);
   const [display, setDisplay] = useState("table");
 
   if (isFetching) return <Loader />;
   return (
     <>
       <div className="standings-container">
-        <h1
-          style={{ marginLeft: "2vw" }}
-          onClick={() => {
-            navigate(`/`);
-          }}
-        >
-          <IoIosArrowBack />
-        </h1>
         {/* <Leagues /> */}
         <div>
           <div style={{ display: "flex", marginLeft: "7vw", marginTop: "1vh" }}>
@@ -319,22 +306,23 @@ const Standings = () => {
             <h1>
               {league?.name} {league?.season}/{league?.season + 1}
             </h1>
-            <h2
-              style={{ margin: "auto" }}
-              onClick={() =>
-                setStar((currentState) => {
-                  if (currentState == false) {
-                    dispatch(addNewFavoriteLeague(leagueId));
-                    return true;
-                  } else {
-                    dispatch(removeFromFavoriteLeagues(leagueId));
-                    return false;
-                  }
-                })
-              }
-            >
-              {star == false && <BsStar />}
-              {star == true && <BsStarFill />}
+            <h2 style={{ margin: "auto" }}>
+              {!star && (
+                <BsStar
+                  onClick={() => {
+                    dispatch(addNewFavoriteLeague(parseInt(leagueId)));
+                    return setStar(true);
+                  }}
+                />
+              )}
+              {star && (
+                <BsStarFill
+                  onClick={() => {
+                    dispatch(removeFromFavoriteLeagues(parseInt(leagueId)));
+                    setStar(false);
+                  }}
+                />
+              )}
             </h2>
           </div>
           <div className="standings-buttons">
