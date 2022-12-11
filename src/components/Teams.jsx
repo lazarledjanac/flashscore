@@ -27,13 +27,7 @@ const Teams = () => {
           navigate(`/teams/${teamId}`);
         }}
       >
-        <img
-          src={team?.logo}
-          alt=""
-          width="25px"
-          height="25px"
-          style={{ marginRight: "1vw" }}
-        />
+        <img src={team?.logo} alt="" id="league-logo" />
         <text>{team?.name}</text>
       </div>
     );
@@ -41,20 +35,20 @@ const Teams = () => {
 
   return (
     <div className="leagues">
-      <p>
+      <h3 id="my-leagues">
         <AiFillStar /> My Teams
-      </p>
+      </h3>
       <hr />
       {favoriteTeams.length === 0 && (
-        <i style={{ color: "gray", marginLeft: "2vw" }}>No Favorite Teams</i>
+        <i style={{ color: "gray" }}>No Favorite Teams</i>
       )}
       {favoriteTeams.map((team) => (
         <Team teamId={team} />
       ))}
       <hr />
-      <center onClick={openAddLeagueModal}>
+      <i onClick={openAddLeagueModal}>
         <AiOutlinePlus /> Add New Team
-      </center>
+      </i>
       <Modal ref={addNewLeagueRef}>
         <AddToFavorites close={closeAddLeagueModal} type="team" />
       </Modal>

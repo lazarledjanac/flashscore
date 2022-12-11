@@ -23,8 +23,6 @@ const Team = () => {
   const team = useGetTeamByIdQuery(teamId)?.data?.response[0]?.team;
   const stadium = useGetTeamByIdQuery(teamId)?.data?.response[0]?.venue;
   const league = useGetLeagueByTeamIdQuery(teamId).data;
-  console.log(league);
-  console.log(team);
   const isNationalTeam = team?.national;
 
   const year = DateTime.now().year;
@@ -178,85 +176,76 @@ const Team = () => {
     window.scrollTo({ top: 0 });
   });
   return (
-    <div style={{ display: "flex" }}>
-      <div className="team">
-        <div className="team-logo">
-          <img
-            src={team?.logo}
-            alt=""
-            width="150px"
-            height={isNationalTeam ? "100px" : "150px"}
-          />
-          <h2 style={{ marginLeft: "1vw", marginTop: "4vh" }}>
-            {!isFavorite && (
-              <BsStar
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(addNewFavoriteTeam(parseInt(teamId)));
-                }}
-              />
-            )}
-            {isFavorite && (
-              <BsStarFill
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(removeFromFavoriteTeams(parseInt(teamId)));
-                }}
-              />
-            )}
-          </h2>
-        </div>
-        <h1 style={{ marginLeft: "2vw" }}>{team?.name}</h1>
-        <div className="team-details">
-          <button
-            onClick={() => setContent("info")}
-            className={content === "info" ? "active" : null}
-          >
-            Info
-          </button>
-          <button
-            onClick={() => setContent("results")}
-            className={content === "results" ? "active" : null}
-          >
-            Results
-          </button>
-          <button
-            onClick={() => setContent("fixtures")}
-            className={content === "fixtures" ? "active" : null}
-          >
-            Fixtures
-          </button>
-          <button
-            onClick={() => setContent("standings")}
-            className={content === "standings" ? "active" : null}
-          >
-            Standings
-          </button>
-          <button
-            onClick={() => setContent("squad")}
-            className={content === "squad" ? "active" : null}
-          >
-            Squad
-          </button>
-          {!isNationalTeam && (
-            <button
-              onClick={() => setContent("transfers")}
-              className={content === "transfers" ? "active" : null}
-            >
-              Transfers
-            </button>
+    <div className="team">
+      <div className="team-logo">
+        <img src={team?.logo} alt="" />
+        <h2 style={{ marginLeft: "1vw", marginTop: "4vh" }}>
+          {!isFavorite && (
+            <BsStar
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(addNewFavoriteTeam(parseInt(teamId)));
+              }}
+            />
           )}
-        </div>
-        <hr width="80%" />
-        {content === "info" && <Info />}
-        {content === "results" && <Results teamId={teamId} last={20} />}
-        {content === "fixtures" && (
-          <UpcomingFixtures teamId={teamId} next={20} />
-        )}
-        {content === "standings" && <Standings />}
-        {content === "squad" && <Squad />}
-        {content === "transfers" && <Transfers />}
+          {isFavorite && (
+            <BsStarFill
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(removeFromFavoriteTeams(parseInt(teamId)));
+              }}
+            />
+          )}
+        </h2>
       </div>
+      <h1>{team?.name}</h1>
+      <div className="team-details">
+        <button
+          onClick={() => setContent("info")}
+          className={content === "info" ? "active" : null}
+        >
+          Info
+        </button>
+        <button
+          onClick={() => setContent("results")}
+          className={content === "results" ? "active" : null}
+        >
+          Results
+        </button>
+        <button
+          onClick={() => setContent("fixtures")}
+          className={content === "fixtures" ? "active" : null}
+        >
+          Fixtures
+        </button>
+        <button
+          onClick={() => setContent("standings")}
+          className={content === "standings" ? "active" : null}
+        >
+          Standings
+        </button>
+        <button
+          onClick={() => setContent("squad")}
+          className={content === "squad" ? "active" : null}
+        >
+          Squad
+        </button>
+        {!isNationalTeam && (
+          <button
+            onClick={() => setContent("transfers")}
+            className={content === "transfers" ? "active" : null}
+          >
+            Transfers
+          </button>
+        )}
+      </div>
+      <hr width="80%" />
+      {content === "info" && <Info />}
+      {content === "results" && <Results teamId={teamId} last={20} />}
+      {content === "fixtures" && <UpcomingFixtures teamId={teamId} next={20} />}
+      {content === "standings" && <Standings />}
+      {content === "squad" && <Squad />}
+      {content === "transfers" && <Transfers />}
     </div>
   );
 };

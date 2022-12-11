@@ -51,7 +51,7 @@ const Results = ({ teamId, last }) => {
           <img src={match?.league?.logo} width="40px" height="40px" alt="" />
           <b>{match?.league?.name}</b>
         </div>
-        <div style={{ flex: 3 }}>
+        <div style={{ flex: 1 }}>
           <div
             style={isHome ? bold : {}}
             onMouseEnter={() =>

@@ -34,42 +34,6 @@ const Fixtures = () => {
   return (
     <div className="games">
       <div className="buttons-container">
-        <button
-          type="button"
-          className={fixtures === "all" ? "active" : null}
-          onClick={() => {
-            setFixtures("all");
-          }}
-        >
-          ALL
-        </button>
-        <button
-          type="button"
-          className={fixtures === "live" ? "active" : null}
-          onClick={() => {
-            setFixtures("live");
-          }}
-        >
-          LIVE
-        </button>
-        <button
-          type="button"
-          className={fixtures === "finished" ? "active" : null}
-          onClick={() => {
-            setFixtures("finished");
-          }}
-        >
-          STARTED/PLAYED
-        </button>
-        <button
-          type="button"
-          className={fixtures === "upcoming" ? "active" : null}
-          onClick={() => {
-            setFixtures("upcoming");
-          }}
-        >
-          SCHEDULED
-        </button>
         <div className="date">
           <IoIosArrowBack
             className="date-buttons"
@@ -78,7 +42,7 @@ const Fixtures = () => {
             }}
           />
           <BsCalendar3 className="date-buttons" />
-          <strong>{date.toFormat("dd / LL ccc")}</strong>
+          <strong>{date.toFormat("dd / LL ")}</strong>
           <IoIosArrowForward
             className="date-buttons"
             onClick={() => {
@@ -86,6 +50,38 @@ const Fixtures = () => {
             }}
           />
         </div>
+        <button
+          className={fixtures === "all" ? "active" : null}
+          onClick={() => {
+            setFixtures("all");
+          }}
+        >
+          ALL
+        </button>
+        <button
+          className={fixtures === "live" ? "active" : null}
+          onClick={() => {
+            setFixtures("live");
+          }}
+        >
+          LIVE
+        </button>
+        <button
+          className={fixtures === "finished" ? "active" : null}
+          onClick={() => {
+            setFixtures("finished");
+          }}
+        >
+          PLAYED
+        </button>
+        <button
+          className={fixtures === "upcoming" ? "active" : null}
+          onClick={() => {
+            setFixtures("upcoming");
+          }}
+        >
+          SCHEDULED
+        </button>
       </div>
       <br />
       {fixtures === "all" &&

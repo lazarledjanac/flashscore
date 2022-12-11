@@ -8,6 +8,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.navbar {
+  width: 100%;
+  background-color: black;
+}
 .modal-wrapper {
   position: fixed;
   top: 0;
@@ -43,16 +47,17 @@ code {
 }
 .container {
   display: grid;
-  column-gap: 50px;
-  grid-template-columns: 200px 700px;
-  margin: 50px 0 300px 300px;
+  grid-template-columns: 13vw 45vw;
+  margin: 5vh 0 20vw 20vw;
   column-gap: 10px;
   .games {
+    width: 100%;
     background-color: white;
     border-radius: 15px;
     padding: 10px;
     box-shadow: $boxshadow;
     .buttons-container {
+      width: 100%;
       display: flex;
       flex-direction: row;
       button {
@@ -78,7 +83,7 @@ code {
       .date {
         display: flex;
         height: 25px;
-        margin-left: auto;
+        margin-right: auto;
         width: fit-content;
         border: 1px solid gray;
         border-radius: 5px;
@@ -94,7 +99,224 @@ code {
     }
   }
 }
+@media only screen and (max-width: 450px) {
+  #root {
+    .team {
+      margin: auto;
+      margin-top: 10px;
+      width: 95%;
+      border-radius: 10px;
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+      div {
+        margin-top: 1.5vh;
+      }
+      div.lastFixtures {
+      width: 350px;
+      max-width:97%;
+      height: 40px;
+      font-size: 12px;
+      margin-right: 0;
+      margin-left: 0;
+      div#league{
+        margin-left:5%;
+        img{
+        width:20px;
+        height:20px;
+      }
+    }
+  }
+    }
+    .team-details {
+      width: 90%;
+      gap: 3px;
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        font-size: 12px;
+        height: fit-content;
+        width: fit-content;
+      }
+    }
+    .team-logo {
+      margin-left: 10%;
+      img {
+        width: 100px;
+        height: 100px;
+      }
+    }
+    h1 {
+      font-size: 20px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  .container {
+    margin: 1vh 1.5vw;
+    display: grid;
+    column-gap: 5px;
+    grid-template-columns: 25% 69%;
+    .games {
+      width: 100%;
+      .buttons-container {
+        display: grid;
+        grid-template-columns: 23% 23% 23% 23%;
+        width: 100%;
+        button {
+          height: 15px;
+          font-size: 10px;
+          margin-right: 0;
+        }
+        .date {
+          margin-bottom: 10px;
+          height: 15px;
+          width: 100px;
+          justify-content: center;
+          align-items: center;
+          grid-column: 1 / 5;
+          margin-left: 90px;
+          strong {
+            font-size: 10px;
+            margin-top: 0;
+            font-weight: 700;
+          }
+          .date-buttons {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding-top: 0;
+          }
+        }
+      }
+    }
+  }
+  .leagues {
+    font-size: 10px;
+    i {
+      justify-content: center;
+    }
+    img.league-logo {
+      width: 20px;
+      height: 20px;
+      margin-right: 1vw;
+    }
+  }
+  .game {
+    i {
+      font-size: 10px;
+    }
+  }
+  .game-time {
+    font-size: 10px;
+  }
+  .teams-container {
+    flex: 1;
+    strong {
+      font-size: 12px;
+    }
+    .game-team {
+      .img {
+        height: 15px;
+        width: 15px;
+        margin-right: 0;
+      }
+    }
+  }
+  .score_container {
+    font-size: 13px;
+    padding-left: 0;
+  }
+  .halftime_score_container {
+    font-size: 13px;
+    padding-left: 0;
+  }
+  .navbar {
+    display: flex;
+    width: 100%;
+    .search-icon-container {
+      font-size: larger;
+    }
+    .search-icon-container,
+    .login-icon-container {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+  .standings-container {
+    width: fit-content;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    gap: 0;
+  }
+  .standings {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0;
+    font-size: 10px;
+  }
+  .standings-buttons {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    .standings-button {
+      width: min-content;
+      height: 3vh;
+      margin: 0;
+      color: white;
+      background-color: black;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+  }
+  .standings-form {
+    font-size: small;
+    height: fit-content;
+    width: fit-content;
+  }
+  #span {
+    height: 15px;
+    width: 15px;
+    padding-top: 3px;
+    padding-bottom: 0px;
+    border: 1px solid;
+    font-size: smaller;
+  }
+  .standings-team-name {
+    width: 50px;
+  }
+  #table-team-logo {
+    width: 10px;
+    height: 10px;
+  }
+  .standings-league-name {
+    display: flex;
+    margin-left: 2vw;
+    margin-top: 1vh;
+    justify-content: center;
+    align-items: center;
+    h1 {
+      font-size: large;
+    }
+    h2 {
+      font-size: large;
+    }
+    .standings-league-logo {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 1vh;
+    }
+  }
+}
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
 .game-team {
+  display: flex;
+  align-items: center;
   cursor: pointer;
 }
 .game-team:hover {
@@ -110,6 +332,21 @@ code {
   padding-bottom: 1vh;
   margin-right: 1vw;
   box-shadow: $boxshadow;
+  margin-bottom: 2vh;
+  #my-leagues {
+    display: flex;
+    justify-content: center;
+    font-size: larger;
+  }
+  .league-logo {
+    width: 45px;
+    height: 45px;
+    margin-right: 1vw;
+  }
+  i {
+    display: flex;
+    justify-content: center;
+  }
   p {
     margin-left: 1vw;
     font-size: 1.3rem;
@@ -151,15 +388,13 @@ code {
   flex-direction: column;
   padding-left: 3vw;
   width: 20vw;
+  gap: 0.5vh;
 }
 .img {
   height: 20px;
   width: 20px;
   margin-right: 10px;
 }
-// .game-container {
-//   padding-bottom: 2vh;
-// }
 .score_container {
   float: right;
   padding-left: 2vw;
@@ -386,6 +621,13 @@ code {
   div {
     margin-top: 2vh;
   }
+  h1 {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h4 {
+    font-size: small;
+  }
 }
 .team-logo {
   display: flex;
@@ -394,6 +636,10 @@ code {
   align-self: center;
   margin-left: 4vw;
   margin-top: 2vh;
+  img {
+    width: 150px;
+    height: 150px;
+  }
 }
 .team-details {
   display: flex;
@@ -426,19 +672,19 @@ code {
 }
 .odds {
   display: grid;
-  align-content: center;
+  align-content: space-around;
   justify-content: center;
-  grid-template-columns: 5vw 5vw 5vw;
   gap: 10px;
   padding: 10px;
 }
 .odd {
-  width: 5vw;
+  min-width: 5vw;
   height: 3vh;
   border: 1px solid gray;
   border-radius: 10px;
   background-color: white;
   margin: 0 0 1vw 1vw;
+  padding-top: 5px;
 }
 .odd-active {
   width: 5vw;
@@ -447,6 +693,7 @@ code {
   border-radius: 10px;
   margin: 0 0 1vw 1vw;
   background-color: rgb(153, 214, 255);
+  padding-top: 5px;
 }
 .lastFixtures {
   display: flex;
@@ -486,6 +733,16 @@ code {
   gap: 1vw;
   margin-left: 5vw;
 }
+.standings-league-name {
+  display: flex;
+  flex-direction: row;
+  margin-left: 7vw;
+  margin-top: 1vh;
+}
+.standings-league-logo {
+  width: 70px;
+  height: 70px;
+}
 .standings {
   display: flex;
   width: 100%;
@@ -494,19 +751,37 @@ code {
   border: 1px solid gray;
   background-color: white;
   margin-top: 5px;
+  .standings-team-name {
+    text-align: left;
+    padding-left: 1vw;
+    width: 30%;
+    cursor: pointer;
+    img {
+      height: 20px;
+      width: 20px;
+    }
+  }
+  .standings-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    span {
+      width: 30px;
+      height: 20px;
+      padding-top: 6px;
+      padding-bottom: 4px;
+      border: 1px solid black;
+      border-radius: 4px;
+      text-align: center;
+    }
+  }
   table,
   th,
   td {
     text-align: center;
-    span {
-      width: 30px;
-      height: 20px;
-      border-radius: 4px;
-      text-align: center;
-      margin-left: 1vw;
-      padding-top: 5px;
-      margin-top: 2px;
-    }
   }
   tr:nth-child(even) {
     background: rgb(230, 230, 230);

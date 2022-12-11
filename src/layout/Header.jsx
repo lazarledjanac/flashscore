@@ -27,20 +27,24 @@ const Header = () => {
   return (
     <>
       <div className="navbar">
-        <div style={{ flexBasis: "1000px" }}>
+        <div className="logo-container">
           <Link to="/">
             <img src={flashscore} className="logo" />
           </Link>
         </div>
         <div className="search-icon-container" onClick={openSearchModal}>
-          <AiOutlineSearch className="search" />
+          <b>
+            <AiOutlineSearch className="search" />
+          </b>
         </div>
         <div className="login-icon-container" onClick={openLoginModal}>
           <BsPerson style={{ padding: "5px" }} />
           LOGIN
         </div>
         <div className="search-icon-container">
-          <GiHamburgerMenu className="search" />
+          <b>
+            <GiHamburgerMenu className="search" />
+          </b>
         </div>
       </div>
       <Modal ref={searchRef}>

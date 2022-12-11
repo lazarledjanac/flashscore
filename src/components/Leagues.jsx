@@ -1,9 +1,9 @@
-import React,{useRef} from "react";
+import React, { useRef } from "react";
 import { AiFillStar, AiOutlinePlus } from "react-icons/ai";
 import { useGetLeagueByIdQuery } from "../services/footballApi";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {AddToFavorites,Modal} from "../components"
+import { AddToFavorites, Modal } from "../components";
 
 const League = ({ leagueId }) => {
   const navigate = useNavigate();
@@ -16,13 +16,7 @@ const League = ({ leagueId }) => {
         navigate(`/standings/${leagueId}`);
       }}
     >
-      <img
-        src={league?.logo}
-        alt=""
-        width="25px"
-        height="25px"
-        style={{ marginRight: "1vw" }}
-      />
+      <img src={league?.logo} alt="" className="league-logo" />
       <text>{league?.name}</text>
     </div>
   );
@@ -40,18 +34,18 @@ const Leagues = () => {
   };
   return (
     <div className="leagues">
-      <p>
+      <h3 id="my-leagues">
         <AiFillStar />
         My Leagues
-      </p>
+      </h3>
       <hr />
       {favoriteLeagues.map((league) => (
         <League leagueId={league} />
       ))}
       <hr />
-      <center onClick={openAddLeagueModal}>
+      <i onClick={openAddLeagueModal}>
         <AiOutlinePlus /> Add New League
-      </center>
+      </i>
       <Modal ref={addNewLeagueRef}>
         <AddToFavorites close={closeAddLeagueModal} type="league" />
       </Modal>

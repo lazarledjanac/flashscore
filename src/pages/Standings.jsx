@@ -299,10 +299,10 @@ const Standings = () => {
   return (
     <>
       <div className="standings-container">
-        {/* <Leagues /> */}
+        <Leagues />
         <div>
-          <div style={{ display: "flex", marginLeft: "7vw", marginTop: "1vh" }}>
-            <img src={league?.logo} alt="" width="70px" height="70px" />
+          <div className="standings-league-name">
+            <img src={league?.logo} alt="" className="standings-league-logo" />
             <h1>
               {league?.name} {league?.season}/{league?.season + 1}
             </h1>
@@ -326,11 +326,36 @@ const Standings = () => {
             </h2>
           </div>
           <div className="standings-buttons">
-            <button onClick={() => setDisplay("table")}>Standings</button>
-            <button onClick={() => setDisplay("results")}>Results</button>
-            <button onClick={() => setDisplay("fixtures")}>Fixtures</button>
-            <button onClick={() => setDisplay("topscorers")}>TopScorers</button>
-            <button onClick={() => setDisplay("archive")}>Archive</button>
+            <button
+              className="standings-button"
+              onClick={() => setDisplay("table")}
+            >
+              Standings
+            </button>
+            <button
+              className="standings-button"
+              onClick={() => setDisplay("results")}
+            >
+              Results
+            </button>
+            <button
+              className="standings-button"
+              onClick={() => setDisplay("fixtures")}
+            >
+              Fixtures
+            </button>
+            <button
+              className="standings-button"
+              onClick={() => setDisplay("topscorers")}
+            >
+              TopScorers
+            </button>
+            <button
+              className="standings-button"
+              onClick={() => setDisplay("archive")}
+            >
+              Archive
+            </button>
           </div>
           {display === "table" && <Table season={season} leagueId={leagueId} />}
           {display === "results" && <Results />}

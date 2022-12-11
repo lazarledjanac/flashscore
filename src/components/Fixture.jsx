@@ -14,22 +14,24 @@ const Fixture = ({ game }) => {
 
   console.log(game);
   return (
-    <div
-      className="game-container"
-      onClick={() => {
-        navigate(navigation);
-      }}
-      key={game.fixture.id}
-    >
+    <>
       {/* <div className="game-league">
         <AiFillStar style={{ color: "orange" }} /> {league}
         <a style={{ float: "right" }}>
           Standings <IoIosArrowUp />
         </a>
       </div> */}
-      <div className="game">
-        <AiOutlineStar style={{ paddingRight: "2vw" }} />
-        <div style={{ width: "6vw" }}>
+      <div
+        className="game"
+        onClick={() => {
+          navigate(navigation);
+        }}
+        key={game.fixture.id}
+      >
+        <i>
+          <AiOutlineStar style={{ paddingRight: "2vw" }} />
+        </i>
+        <div className="game-time">
           {DateTime.fromISO(game?.fixture?.date).toFormat("T")}
         </div>
         <div className="teams-container">
@@ -99,7 +101,7 @@ const Fixture = ({ game }) => {
             </div>
           )}
       </div>
-    </div>
+    </>
   );
 };
 

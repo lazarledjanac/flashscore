@@ -51,8 +51,8 @@ const Match = () => {
   };
   return (
     <div>
-      <div style={{ display: "-webkit-inline-flex" }}>
-        <h1 style={{ marginLeft: "25vw" }}>
+      <div style={{ display: "flex" }}>
+        <h1 style={{ marginLeft: "30vw" }}>
           {match?.league?.country}{" "}
           <img src={match?.league?.flag} width="40px" height="40px" /> :{" "}
           {match?.league?.name}
@@ -186,7 +186,13 @@ const Match = () => {
       </div>
       <hr style={{ width: "50vw" }} />
       {display === "match" && <MatchDetails id={id} />}
-      {display === "odds" && <Odds id={id} />}
+      {display === "odds" && (
+        <Odds
+          id={id}
+          homeGoals={match?.goals?.home}
+          awayGoals={match?.goals?.away}
+        />
+      )}
       {display === "h2h" && (
         <HeadToHead
           id={id}

@@ -33,30 +33,24 @@ const Table = ({
       style = { backgroundColor: "rgb(18, 0, 153)", color: "white" };
     }
     let spans = [];
-    for (let j = 0; j < res?.form?.length; j++) {
-      spans[j] = (
+    for (let i = 0; i < res?.form?.length; i++) {
+      spans[i] = (
         <span
+          id="span"
           style={
-            res?.form[j] === "W"
+            res?.form[i] === "W"
               ? { backgroundColor: "lightgreen" }
-              : res?.form[j] === "L"
+              : res?.form[i] === "L"
               ? { backgroundColor: "red" }
               : { backgroundColor: "yellow" }
           }
         >
-          {res?.form[j]}
+          {res?.form[i]}
         </span>
       );
     }
     const form = (
-      <td
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        {spans.map((span) => span)}
-      </td>
+      <td className="standings-form">{spans.map((span) => span)}</td>
     );
     return (
       <tr
@@ -69,17 +63,12 @@ const Table = ({
       >
         <td style={style}>{res?.rank}</td>
         <td
-          style={{
-            textAlign: "left",
-            paddingLeft: "1vw",
-            width: "30%",
-            cursor: "pointer",
-          }}
+          className="standings-team-name"
           onClick={() => {
             navigate(`/standings/${leagueId}/teams/${res?.team?.id}`);
           }}
         >
-          <img src={res?.team?.logo} width="20px" height="20px" alt="" />
+          <img src={res?.team?.logo} id="table-team-logo" alt="" />
           {res?.team?.name}
         </td>
         <td>{res?.all?.played}</td>

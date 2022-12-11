@@ -7,7 +7,6 @@ const IndexPage = () => {
     <div className="container">
       <div>
         <Leagues />
-        <br />
         <Teams />
       </div>
       <Fixtures />
