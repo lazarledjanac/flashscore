@@ -43,10 +43,8 @@ const MatchDetails = ({ id }) => {
           </div>
         </div>
       </center>
-      <div>
-        <hr style={{ width: "30vw" }} />
-        <center>{details}</center>
-      </div>
+      <hr style={{ width: "30vw" }} />
+      <center>{details}</center>
     </>
   );
 };

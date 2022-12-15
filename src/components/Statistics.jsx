@@ -4,8 +4,7 @@ import { Statistic } from "../components";
 
 const Statistics = ({ id }) => {
   const match = useGetFixtureByIdQuery(id)?.data?.response[0];
-  let show = match?.statistics[0]?.statistics[0]?.length > 0;
-  console.log(show);
+  let show = match?.statistics[0]?.statistics?.length > 0;
   let statistics = [];
   for (let i = 0; i < match?.statistics[0]?.statistics?.length; i++)
     statistics[i] = i;

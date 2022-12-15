@@ -34,12 +34,13 @@ const Match = () => {
   useEffect(() => {
     window.scrollTo({ top: 0 });
   });
+
   const Standings = () => {
     const tableYear = DateTime.fromISO(match?.fixture?.date).year;
     const endOfTheSeason = DateTime.fromISO(`${tableYear}-07-01`);
     let season = endOfTheSeason > date ? tableYear - 1 : tableYear;
     return (
-      <div style={{ width: "50vw", margin: "auto" }}>
+      <div className="match-standings-container">
         <Table
           emphasize={homeId}
           emphasizeGuest={awayId}
@@ -50,24 +51,22 @@ const Match = () => {
     );
   };
   return (
-    <div>
-      <div style={{ display: "flex" }}>
-        <h1 style={{ marginLeft: "30vw" }}>
-          {match?.league?.country}{" "}
-          <img src={match?.league?.flag} width="40px" height="40px" /> :{" "}
-          {match?.league?.name}
-          <img src={match?.league?.logo} width="40px" height="40px" />-{" "}
-          {match?.league?.round}:{" "}
-        </h1>
+    <>
+      <div className="match-league-name">
+        <center>
+          {match?.league?.country} <img src={match?.league?.flag} /> :{" "}
+          {match?.league?.name}- {match?.league?.round}:{" "}
+        </center>
       </div>
-      <hr style={{ width: "30vw" }} />
+      <hr style={{ width: "30%" }} />
       <center>
-        {match?.fixture?.venue?.name}, {match?.fixture?.venue?.city}
+        <i>
+          {match?.fixture?.venue?.name}, {match?.fixture?.venue?.city}
+        </i>
       </center>
-      <div className="match-container">
+      <div className="match-teams-container">
         {!isFavoriteHome && (
           <BsStar
-            style={{ paddingTop: "35px" }}
             onClick={() => {
               dispatch(addNewFavoriteTeam(parseInt(homeId)));
             }}
@@ -75,7 +74,6 @@ const Match = () => {
         )}
         {isFavoriteHome && (
           <BsStarFill
-            style={{ paddingTop: "35px" }}
             onClick={() => {
               dispatch(removeFromFavoriteTeams(parseInt(homeId)));
             }}
@@ -88,19 +86,17 @@ const Match = () => {
           }}
         >
           <img src={match?.teams?.home?.logo} alt="" className="match_img" />
-          <h2 style={{ textAlign: "center", color: homeNameColor }}>
-            {match?.teams?.home?.name}
-          </h2>
+          <h2 style={{ color: homeNameColor }}>{match?.teams?.home?.name}</h2>
         </div>
-        <div style={{ textAlign: "center", display: "inline" }}>
+        <center>
           {DateTime.fromISO(match?.fixture?.date).toFormat("dd LLL y T")}
-          <h4 style={{ fontSize: "3em", margin: "2vw" }}>
+          <h4>
             {match?.goals?.home} {played ? "-" : "vs"} {match?.goals?.away}
           </h4>
           {played && (
-            <text>
+            <>
               HT: {halfTime?.home} - {halfTime?.away}
-            </text>
+            </>
           )}
           <br />
           {extraTime && (
@@ -116,7 +112,7 @@ const Match = () => {
               {match?.score?.penalties?.away}
             </text>
           )}
-        </div>
+        </center>
         <div
           className="match-team"
           onClick={() => {
@@ -130,7 +126,6 @@ const Match = () => {
         </div>
         {!isFavoriteAway && (
           <BsStar
-            style={{ paddingTop: "35px" }}
             onClick={(e) => {
               e.preventDefault();
               dispatch(addNewFavoriteTeam(parseInt(awayId)));
@@ -147,7 +142,7 @@ const Match = () => {
           />
         )}
       </div>
-      <hr style={{ marginTop: "10vh", width: "50vw" }} />
+      <hr style={{ width: "50vw" }} />
       <div className="details">
         {played && (
           <button
@@ -204,7 +199,7 @@ const Match = () => {
       {display === "standings" && <Standings />}
       <br />
       <br />
-    </div>
+    </>
   );
 };
 

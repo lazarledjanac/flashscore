@@ -16,7 +16,7 @@ const HeadToHead = ({ id, homeId, awayId, onClick }) => {
 
   return games.map((game) => (
     <div
-      className="h2h"
+      className="h2h-container"
       style={
         id == matches[game]?.fixture?.id
           ? { backgroundColor: "lightgray" }
@@ -32,12 +32,7 @@ const HeadToHead = ({ id, homeId, awayId, onClick }) => {
         {DateTime.fromISO(matches[game]?.fixture?.date).toFormat("dd-LL-y")}
       </div>
       <div
-        style={{
-          width: "20vw",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        className="h2h-league-name"
         onClick={() => {
           navigate(`/fixture/${matches[game]?.fixture?.id}`);
           onClick();
@@ -51,7 +46,7 @@ const HeadToHead = ({ id, homeId, awayId, onClick }) => {
         />
         <i>{matches[game]?.league?.name}</i>
       </div>
-      <div style={{ flex: 1 }}>
+      <div>
         <div
           id="h2h-team-home"
           onClick={() => navigate(`/teams/${matches[game]?.teams?.home?.id}`)}

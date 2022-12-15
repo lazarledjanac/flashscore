@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   useGetLeagueByCountryNameQuery,
   useGetCurrentRoundByLeagueIdQuery,
@@ -292,21 +292,33 @@ const Standings = () => {
     );
   };
 
+
   const [star, setStar] = useState(isFavorite);
   const [display, setDisplay] = useState("table");
+  
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
+  const handleResize = () =>{ 
+    setScreenWidth(window.innerWidth);
+    console.log(screenWidth);
+  }
+  useEffect(() => {
+    window.addEventListener("resize", handleResize, false);
+  }, []);
+
+ 
   if (isFetching) return <Loader />;
   return (
     <>
       <div className="standings-container">
-        <Leagues />
+        {screenWidth>450 && <Leagues />}
         <div>
           <div className="standings-league-name">
             <img src={league?.logo} alt="" className="standings-league-logo" />
             <h1>
               {league?.name} {league?.season}/{league?.season + 1}
             </h1>
-            <h2 style={{ margin: "auto" }}>
+            <h2 >
               {!star && (
                 <BsStar
                   onClick={() => {

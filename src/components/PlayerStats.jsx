@@ -30,7 +30,7 @@ const PlayerStats = ({ id, competition }) => {
           ).toPrecision(1) || "None"}
         </div>
         <div>
-          Total minutes played:{" "}
+          Minutes played:{" "}
           {statistics?.response[0]?.statistics[competition]?.games?.minutes}
         </div>
         <div>

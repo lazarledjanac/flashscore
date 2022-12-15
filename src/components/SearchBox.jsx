@@ -34,21 +34,20 @@ const SearchBox = ({ close }) => {
 
   const TeamSearchResults = () => {
     const { data: results, isFetching } = useGetTeamBySearchTermQuery(term);
-  
+
     if (term.length < 3) return;
     if (isFetching) return <Loader />;
     if (!results?.response) return <p>No results for "{term}"</p>;
     return results?.response.map((res) => (
       <>
-        <div
-          className="search-item"
-          
-        >
+        <div className="search-item">
           <img src={res?.team?.logo} alt="" />
-          <div onClick={() => {
-            navigate(`/teams/${res?.team?.id}`);
-            close();
-          }}>
+          <div
+            onClick={() => {
+              navigate(`/teams/${res?.team?.id}`);
+              close();
+            }}
+          >
             <b style={{ color: "black" }}>{res?.team?.name}</b>
             <b style={{ fontSize: "small" }}>{res?.team?.country}</b>
           </div>
@@ -60,7 +59,7 @@ const SearchBox = ({ close }) => {
                 }}
               />
             )}
-            {favoriteTeams.includes(parseInt(res?.team?.id))  && (
+            {favoriteTeams.includes(parseInt(res?.team?.id)) && (
               <BsStarFill
                 onClick={() => {
                   dispatch(removeFromFavoriteTeams(parseInt(res?.team?.id)));
@@ -74,22 +73,21 @@ const SearchBox = ({ close }) => {
     ));
   };
   const CompetitionSearchResults = () => {
-     const { data: results, isFetching }= useGetLeagueBySearchTermQuery(term);
+    const { data: results, isFetching } = useGetLeagueBySearchTermQuery(term);
 
     if (term.length < 3) return;
     if (isFetching) return <Loader />;
     if (!results?.response) return <p>No results for "{term}"</p>;
     return results?.response.map((res) => (
       <>
-        <div
-          className="search-item"
-        >
+        <div className="search-item">
           <img src={res?.league?.logo} alt="" />
-          <div 
-          onClick={() => {
-            navigate(`/standings/${res?.league?.id}`);
-            close();
-          }}>
+          <div
+            onClick={() => {
+              navigate(`/standings/${res?.league?.id}`);
+              close();
+            }}
+          >
             <b style={{ color: "black" }}> {res?.league?.name}</b>
             <b style={{ fontSize: "small" }}>{res?.country?.name}</b>
           </div>
@@ -170,7 +168,6 @@ const SearchBox = ({ close }) => {
         <button onClick={() => setTerm(termRef.current.value)}>
           <AiOutlineSearch />
         </button>
-        <hr />
       </div>
       {term.length < 3 && <p>Please type at least 3 characters.</p>}
       {type === "teams" && <TeamSearchResults />}

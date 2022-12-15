@@ -69,7 +69,7 @@ const Table = ({
           }}
         >
           <img src={res?.team?.logo} id="table-team-logo" alt="" />
-          {res?.team?.name}
+           {res?.team?.name}
         </td>
         <td>{res?.all?.played}</td>
         <td>{res?.all?.win}</td>

@@ -20,7 +20,7 @@ const Statistic = ({ type, home, away }) => {
     <>
       <div
         style={{
-          display: "-webkit-inline-flex",
+          display: "flex",
           justifyContent: "center",
         }}
       >
@@ -29,7 +29,7 @@ const Statistic = ({ type, home, away }) => {
         <h4 style={{ paddingLeft: "6vw" }}>{away}</h4>
       </div>
       <center>
-        <div style={{ display: "-webkit-inline-flex" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <div className="home-bar-empty">
             <div
               className="home-bar-filled"

@@ -54,55 +54,53 @@ const Team = () => {
       useGetTransfersByTeamIdQuery(teamId);
     console.log(transfers);
 
-    let array = [];
+    let transfersIndexes = [];
     let j = 0;
     for (let i = transfers?.results - 1; i > transfers?.results - 20; i--) {
-      array[j] = i;
+      transfersIndexes[j] = i;
       j++;
     }
-    console.log(array);
-    const Row = ({ i }) => {
+    const Row = ({ index }) => {
       return (
         <tr>
-          <td>{transfers?.response[i]?.transfers[0]?.date}</td>
+          <td>{transfers?.response[index]?.transfers[0]?.date}</td>
           <td
             onClick={() =>
-              navigate(`/player/${transfers?.response[i]?.player?.id}`)
+              navigate(`/player/${transfers?.response[index]?.player?.id}`)
             }
           >
-            {transfers?.response[i]?.player?.name}
+            {transfers?.response[index]?.player?.name}
           </td>
           <td
             onClick={() => {
               navigate(
-                `/teams/${transfers?.response[i]?.transfers[0]?.teams?.out?.id}`
+                `/teams/${transfers?.response[index]?.transfers[0]?.teams?.out?.id}`
               );
               setContent("info");
             }}
           >
             <img
-              src={transfers?.response[i]?.transfers[0]?.teams?.out?.logo}
+              src={transfers?.response[index]?.transfers[0]?.teams?.out?.logo}
               alt=""
               width="20px"
               height="20px"
             />
-            {transfers?.response[i]?.transfers[0]?.teams?.out?.name}
+            {transfers?.response[index]?.transfers[0]?.teams?.out?.name}
           </td>
           <td
             onClick={() => {
               navigate(
-                `/teams/${transfers?.response[i]?.transfers[0]?.teams?.in?.id}`
+                `/teams/${transfers?.response[index]?.transfers[0]?.teams?.in?.id}`
               );
               setContent("info");
             }}
           >
             <img
-              src={transfers?.response[i]?.transfers[0]?.teams?.in?.logo}
+              src={transfers?.response[index]?.transfers[0]?.teams?.in?.logo}
               alt=""
-              width="20px"
-              height="20px"
+              
             />
-            {transfers?.response[i]?.transfers[0]?.teams?.in?.name}
+                {transfers?.response[index]?.transfers[0]?.teams?.in?.name}
           </td>
         </tr>
       );
@@ -117,8 +115,8 @@ const Team = () => {
             <th>From</th>
             <th>To</th>
           </tr>
-          {array.map((i) => (
-            <Row i={i} />
+          {transfersIndexes.map((index) => (
+            <Row index={index} />
           ))}
         </table>
       </div>

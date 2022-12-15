@@ -22,7 +22,9 @@ const Lineups = ({ id }) => {
           }
         >
           <div>{match?.lineups[0]?.startXI[player]?.player?.number}</div>
-          <div>{match?.lineups[0]?.startXI[player]?.player?.name}</div>
+          <div style={{ flex: 4 }}>
+            {match?.lineups[0]?.startXI[player]?.player?.name}
+          </div>
         </div>
         <div
           style={{ textAlign: "right", display: "flex", flexDirection: "row" }}
@@ -32,7 +34,9 @@ const Lineups = ({ id }) => {
             )
           }
         >
-          <div>{match?.lineups[1]?.startXI[player]?.player?.name}</div>
+          <div style={{ flex: 4 }}>
+            {match?.lineups[1]?.startXI[player]?.player?.name}
+          </div>
           <div>{match?.lineups[1]?.startXI[player]?.player?.number}</div>
         </div>
       </div>
@@ -65,12 +69,16 @@ const Lineups = ({ id }) => {
           <div>
             {match?.lineups[0]?.substitutes[substitute]?.player?.number}
           </div>
-          <div>{match?.lineups[0]?.substitutes[substitute]?.player?.name}</div>
+          <div style={{ flex: 4 }}>
+            {match?.lineups[0]?.substitutes[substitute]?.player?.name}
+          </div>
         </div>
         <div
           style={{ textAlign: "right", display: "flex", flexDirection: "row" }}
         >
-          <div>{match?.lineups[1]?.substitutes[substitute]?.player?.name}</div>
+          <div style={{ flex: 4 }}>
+            {match?.lineups[1]?.substitutes[substitute]?.player?.name}
+          </div>
           <div>
             {match?.lineups[1]?.substitutes[substitute]?.player?.number}
           </div>
@@ -94,11 +102,11 @@ const Lineups = ({ id }) => {
   };
   if (lineups) {
     return (
-      <div style={{ width: "60%" }}>
+      <div className="lineups-container">
         <h1>Lineups</h1>
         <div className="match-summary">
           <div style={{ textAlign: "left" }}>4-4-2</div>
-          <div>STARTING LINEUPS</div>
+          <div style={{ flex: 2 }}>STARTING LINEUPS</div>
           <div style={{ textAlign: "right" }}>4-2-3-1</div>
         </div>
         <Players />

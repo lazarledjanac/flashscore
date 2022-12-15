@@ -41,8 +41,6 @@ const Player = () => {
                       statistics?.response[0]?.statistics[button]?.league?.logo
                     }
                     alt=""
-                    width="80px"
-                    height="80px"
                   />
                 </div>
               )
@@ -124,20 +122,26 @@ const Player = () => {
     <center>
       <div className="player-container">
         <div className="player">
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div className="photo">
-              <img src={player?.photo} alt="" width="100px" height="100px" />
-            </div>
-            <div>
-              <b id="name">{player?.name}</b>{" "}
-              <img src={flag} alt="" width="30px" height="20px" />
-              <p>
+          <div style={{ display: "flex" }}>
+            <img src={player?.photo} alt="" id="player-photo" />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "left",
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <b id="name">{player?.name}</b>{" "}
+                <img src={flag} alt="" width="30px" height="20px" />
+              </div>
+              <strong>
                 Position:{" "}
                 {statistics?.response[0]?.statistics[0]?.games?.position}
-              </p>
-              <p style={{ marginLeft: "30px" }}>
+              </strong>
+              <strong>
                 Age: {player?.age} ({player?.birth?.date})
-              </p>
+              </strong>
             </div>
           </div>
         </div>
