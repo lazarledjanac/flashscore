@@ -19,7 +19,6 @@ const Teams = () => {
   const Team = ({ teamId }) => {
     const navigate = useNavigate();
     const team = useGetTeamByIdQuery(teamId)?.data?.response[0]?.team;
-    console.log(team);
     return (
       <div
         key={teamId}
@@ -39,10 +38,8 @@ const Teams = () => {
         <AiFillStar /> My Teams
       </h3>
       <hr />
-      {favoriteTeams.length === 0 && (
-        <i style={{ color: "gray" }}>No Favorite Teams</i>
-      )}
-      {favoriteTeams.map((team) => (
+      {!favoriteTeams && <i style={{ color: "gray" }}>No Favorite Teams</i>}
+      {favoriteTeams?.map((team) => (
         <Team teamId={team} />
       ))}
       <hr />

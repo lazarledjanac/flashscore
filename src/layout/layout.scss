@@ -29,13 +29,22 @@
     margin-right: 50px;
     color: white;
     background-color: rgb(59, 59, 59);
-    width: 100px;
+    min-width: 100px;
+     width: fit-content;
     height: 40px;
     border-radius: 10px;
     text-align: center;
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    font-size: 15px;
+    button{
+      background-color: transparent;
+      border: 1px white solid;
+      border-radius: 10px;
+      color: white;
+      margin-left: 10px;
+    }
   }
 }
 @media only screen and (max-width: 450px) {

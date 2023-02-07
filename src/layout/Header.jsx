@@ -6,10 +6,17 @@ import { BsPerson } from "react-icons/bs";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import { SearchBox, Modal, LoginBox } from "../components";
+import { useSelector, useDispatch } from "react-redux";
+import { userLogout } from "../services/Redux";
+import { BsXLg } from "react-icons/bs";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const { loggedIn, loggedUser } = useSelector((store) => store.redux);
+
   const searchRef = useRef();
   const loginRef = useRef();
+  const logoutRef = useRef();
 
   const closeSearchModal = () => {
     searchRef.current.close();
@@ -17,12 +24,18 @@ const Header = () => {
   const closeLoginModal = () => {
     loginRef.current.close();
   };
+  const closeLogoutModal = () => {
+    logoutRef.current.close();
+  };
 
   const openSearchModal = () => {
     searchRef.current.openModal();
   };
   const openLoginModal = () => {
     loginRef.current.openModal();
+  };
+  const openLogoutModal = () => {
+    logoutRef.current.openModal();
   };
   return (
     <>
@@ -37,9 +50,19 @@ const Header = () => {
             <AiOutlineSearch className="search" />
           </b>
         </div>
-        <div className="login-icon-container" onClick={openLoginModal}>
+        <div
+          className="login-icon-container"
+          onClick={loggedIn ? openLogoutModal : openLoginModal}
+        >
           <BsPerson style={{ padding: "5px" }} />
-          LOGIN
+          {loggedIn ? (
+            <>
+              <b>{loggedUser.username}</b>
+              <button>Log out</button>
+            </>
+          ) : (
+            "LOGIN"
+          )}
         </div>
         <div className="search-icon-container">
           <b>
@@ -52,6 +75,22 @@ const Header = () => {
       </Modal>
       <Modal ref={loginRef}>
         <LoginBox close={closeLoginModal} />
+      </Modal>
+      <Modal ref={logoutRef}>
+        <div className="form">
+          <h1>Are you sure you want to log out?</h1>
+          <div style={{ display: "flex", width: "80%", gap: "20px" }}>
+            <button
+              onClick={() => {
+                dispatch(userLogout());
+                closeLogoutModal();
+              }}
+            >
+              Yes
+            </button>
+            <button onClick={() => closeLogoutModal()}>No</button>
+          </div>
+        </div>
       </Modal>
     </>
   );

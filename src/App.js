@@ -20,6 +20,7 @@ function App() {
         <Route path="/teams/:teamId" element={<Team />} />
         <Route path="/standings/:leagueId/teams/:teamId" element={<Team />} />
         <Route path="/standings/:leagueId" element={<Standings />} />
+        <Route path="/standings/:leagueId/:archive" element={<Standings />} />
         <Route path="/player/:playerId" element={<Player />} />
         <Route path="/coach/:coachId" element={<Coach />} />
       </Routes>

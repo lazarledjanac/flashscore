@@ -5,6 +5,7 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -12,6 +13,10 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const SignUpForm = ({ setActive }) => {
   const userRef = useRef();
   const errRef = useRef();
+
+  const { favoriteLeagues, favoriteTeams } = useSelector(
+    (store) => store.redux
+  );
 
   const [user, setUser] = useState("");
   const [validName, setValidName] = useState(false);
@@ -54,7 +59,28 @@ const SignUpForm = ({ setActive }) => {
       setErrMsg("Invalid Entry");
       return;
     }
-    console.log(user, pwd);
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+      if (this.readyState == 4) {
+        if (this.status == 200) {
+          alert("Success");
+        } else {
+          alert("Error. Users couldn't be loaded.");
+        }
+      }
+    };
+    request.open(
+      "POST",
+      "https://flashscore-b65db-default-rtdb.europe-west1.firebasedatabase.app/users.json"
+    );
+    request.send(
+      JSON.stringify({
+        username: user,
+        password: pwd,
+        favoriteLeagues,
+        favoriteTeams: [],
+      })
+    );
     setSuccess(true);
   };
 
@@ -63,12 +89,7 @@ const SignUpForm = ({ setActive }) => {
       {success ? (
         <section className="signup-success">
           <h1>You have successfully registered!</h1>
-          <button
-            onClick={setActive}
-            //   style={{}}
-          >
-            SIGN IN
-          </button>
+          <button onClick={setActive}>SIGN IN</button>
         </section>
       ) : (
         <div className="form">

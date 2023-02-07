@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { BsXLg, BsStar, BsStarFill } from "react-icons/bs";
+import { BsXLg } from "react-icons/bs";
 import { AiOutlineSearch } from "react-icons/ai";
 import {
   useGetTeamBySearchTermQuery,
@@ -7,20 +7,10 @@ import {
   useGetLeagueBySearchTermQuery,
 } from "../services/footballApi";
 import { useNavigate } from "react-router-dom";
-import Loader from "./Loader";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  addNewFavoriteTeam,
-  removeFromFavoriteTeams,
-  addNewFavoriteLeague,
-  removeFromFavoriteLeagues,
-} from "../services/Redux";
+import { Loader, StarLeague, StarTeam } from ".";
 
 const SearchBox = ({ close }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { favoriteLeagues } = useSelector((store) => store.redux);
-  const { favoriteTeams } = useSelector((store) => store.redux);
 
   const [type, setType] = useState("teams");
   const [term, setTerm] = useState("");
@@ -52,20 +42,7 @@ const SearchBox = ({ close }) => {
             <b style={{ fontSize: "small" }}>{res?.team?.country}</b>
           </div>
           <h2>
-            {!favoriteTeams.includes(parseInt(res?.team?.id)) && (
-              <BsStar
-                onClick={() => {
-                  dispatch(addNewFavoriteTeam(parseInt(res?.team?.id)));
-                }}
-              />
-            )}
-            {favoriteTeams.includes(parseInt(res?.team?.id)) && (
-              <BsStarFill
-                onClick={() => {
-                  dispatch(removeFromFavoriteTeams(parseInt(res?.team?.id)));
-                }}
-              />
-            )}
+            <StarTeam teamId={res?.team?.id} />
           </h2>
         </div>
         <hr width="80%" />
@@ -92,22 +69,7 @@ const SearchBox = ({ close }) => {
             <b style={{ fontSize: "small" }}>{res?.country?.name}</b>
           </div>
           <h2>
-            {!favoriteLeagues.includes(parseInt(res?.league?.id)) && (
-              <BsStar
-                onClick={() => {
-                  dispatch(addNewFavoriteLeague(parseInt(res?.league?.id)));
-                }}
-              />
-            )}
-            {favoriteLeagues.includes(parseInt(res?.league?.id)) && (
-              <BsStarFill
-                onClick={() => {
-                  dispatch(
-                    removeFromFavoriteLeagues(parseInt(res?.league?.id))
-                  );
-                }}
-              />
-            )}
+            <StarLeague leagueId={res?.league?.id} />
           </h2>
         </div>
         <hr width="80%" />

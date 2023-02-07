@@ -3,10 +3,9 @@ import {
   useGetTrophiesByCoachIdQuery,
   useGetTrophiesByPlayerIdQuery,
 } from "../services/footballApi";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Achievements = ({ coachId, playerId }) => {
-  const navigate = useNavigate();
   const coachAchievements =
     useGetTrophiesByCoachIdQuery(coachId)?.data?.response;
   const playerAchievements =
@@ -22,7 +21,7 @@ const Achievements = ({ coachId, playerId }) => {
       </tr>
       {achievements?.map((achievement) => (
         <tr>
-          <td onClick={() => navigate(`/standings/`)}>{achievement?.league}</td>
+          <td>{achievement?.league}</td>
           <td>{achievement?.season}</td>
           <td>{achievement?.place === "Winner" ? "Champion" : "Runner-up"}</td>
         </tr>

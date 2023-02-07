@@ -12,7 +12,6 @@ const Fixture = ({ game }) => {
 
   const [navigation, setNavigation] = useState(`/fixture/${game.fixture.id}`);
 
-  console.log(game);
   return (
     <>
       {/* <div className="game-league">

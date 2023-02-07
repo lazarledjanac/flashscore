@@ -1,6 +1,6 @@
 import React from "react";
 import "../index.scss";
-import { Leagues, Teams, Fixtures } from "../components";
+import { Leagues, Teams, Fixtures, Countries } from "../components";
 
 const IndexPage = () => {
   return (
@@ -8,6 +8,7 @@ const IndexPage = () => {
       <div>
         <Leagues />
         <Teams />
+        <Countries />
       </div>
       <Fixtures />
     </div>

@@ -15,6 +15,7 @@ const League = ({ leagueId }) => {
       onClick={() => {
         navigate(`/standings/${leagueId}`);
       }}
+      id="leagues-name"
     >
       <img src={league?.logo} alt="" className="league-logo" />
       <text>{league?.name}</text>

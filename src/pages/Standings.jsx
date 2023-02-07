@@ -1,42 +1,38 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import {
   useGetLeagueByCountryNameQuery,
   useGetCurrentRoundByLeagueIdQuery,
-  useGetResultsByRoundAndLeagueIdQuery,
-  useGetAllRoundsByLeagueIdQuery,
-  useGetTopScorersByLeagueIdQuery,
-  useGetLeagueByIdQuery,
   useGetStandingsBySeasonAndLeagueIdQuery,
 } from "../services/footballApi";
 import { useParams, useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
-import { Loader, Table } from "../components";
-import { BsStar, BsStarFill } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addNewFavoriteLeague,
-  removeFromFavoriteLeagues,
-} from "../services/Redux";
+import { Loader, Table, StarLeague } from "../components";
+
+const LeagueResults = lazy(() => import("../components/LeagueResults"));
+const NextFixtures = lazy(() => import("../components/NextFixtures"));
+const TopScorers = lazy(() => import("../components/TopScorers"));
+const Archive = lazy(() => import("../components/Archive"));
 
 const Standings = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { leagueId } = useParams();
-  const { favoriteLeagues } = useSelector((store) => store.redux);
-  const isFavorite = favoriteLeagues.includes(parseInt(leagueId));
-  console.log(isFavorite);
+  const { leagueId, archive } = useParams();
 
-  const year = DateTime.now().year;
+  const year = archive ? archive : DateTime.now().year - 1;
   const [season, setSeason] = useState(year);
+  console.log(season);
 
   const isFetching = useGetStandingsBySeasonAndLeagueIdQuery({
     season,
     leagueId,
   }).isFetching;
-  const league = useGetStandingsBySeasonAndLeagueIdQuery({ season, leagueId })
-    ?.data?.response[0].league;
+
+  const league = useGetStandingsBySeasonAndLeagueIdQuery({
+    season: parseInt(season),
+    leagueId,
+  })?.data?.response[0].league;
+  console.log(league);
   const currentRound =
-    useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0].slice(-2);
+    useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0]?.slice(-2);
 
   const Leagues = () => {
     const { data: leagues, isFetching } = useGetLeagueByCountryNameQuery(
@@ -46,7 +42,7 @@ const Standings = () => {
     if (isFetching) return <Loader />;
     return (
       <div className="national-leagues">
-        <div style={{ display: "flex" }}>
+        <section style={{ display: "flex", justifyContent: "center" }}>
           <img
             src={league?.flag}
             alt=""
@@ -54,15 +50,15 @@ const Standings = () => {
             height="30px"
             style={{ marginTop: "2vh" }}
           />
-          <h4>{league?.country}</h4>
-        </div>
+          <h3>{league?.country}</h3>
+        </section>
         <hr width="100%" />
         {leagues?.response?.map((res) => (
           <div
             onClick={() => {
               if (res?.league?.type === "League") {
                 navigate(`/standings/${res?.league?.id}`);
-                setDisplay("table");
+                // setDisplay("table");
               }
             }}
           >
@@ -72,308 +68,101 @@ const Standings = () => {
       </div>
     );
   };
-  const Results = () => {
-    let matchdays = [];
-    for (let i = 1; i < currentRound; i++) {
-      matchdays[i] = i;
-    }
-    console.log(matchdays);
-    const Result = ({ matchday }) => {
-      const results = useGetResultsByRoundAndLeagueIdQuery({
-        leagueId,
-        round: matchday,
-      })?.data;
-      const isFetching = useGetResultsByRoundAndLeagueIdQuery({
-        leagueId,
-        round: matchday,
-      }).isFetching;
 
-      console.log(results);
-      if (isFetching) return <Loader />;
-      return (
-        <>
-          {results?.response?.map((res) => (
-            <div
-              className="standings-results"
-              onClick={() =>
-                navigate(`/standings/${leagueId}/fixture/${res?.fixture?.id}`)
-              }
-            >
-              <div>
-                {DateTime.fromISO(res?.fixture?.date).toFormat("dd-LL-y T")}
-              </div>
-              <div style={{ flex: 2, marginLeft: "5vw", textAlign: "left" }}>
-                <div
-                  style={res?.teams?.home?.winner ? { fontWeight: "bold" } : {}}
-                >
-                  <img
-                    src={res?.teams?.home?.logo}
-                    alt=""
-                    height="20px"
-                    width="20px"
-                  />
-                  {res?.teams?.home?.name}
-                </div>
-                <div
-                  style={res?.teams?.away?.winner ? { fontWeight: "bold" } : {}}
-                >
-                  <img
-                    src={res?.teams?.away?.logo}
-                    alt=""
-                    height="20px"
-                    width="20px"
-                  />
-                  {res?.teams?.away?.name}
-                </div>
-              </div>
-              {res?.fixture?.status?.long !== "Match Postponed" && (
-                <>
-                  <div>
-                    <div>
-                      <b>{res?.goals?.home}</b>
-                    </div>
-                    <div>
-                      <b>{res?.goals?.away}</b>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      marginRight: "2vw",
-                      marginLeft: ".5vw",
-                      color: "gray",
-                    }}
-                  >
-                    <div>({res?.score?.halftime?.home})</div>
-                    <div>({res?.score?.halftime?.away})</div>
-                  </div>
-                </>
-              )}
-              {res?.fixture?.status?.long === "Match Postponed" && "Postponed"}
-            </div>
-          ))}
-          <strong
-            style={{
-              textAlign: "center",
-              marginTop: "3vh",
-              fontSize: "1.6rem",
-            }}
-          >
-            Matchday {matchday}
-          </strong>
-        </>
-      );
-    };
-    return (
-      <div style={{ display: "flex", flexDirection: "column-reverse" }}>
-        {matchdays.map((matchday) => (
-          <Result matchday={matchday} />
-        ))}
-      </div>
-    );
-  };
-  const Fixtures = () => {
-    const leagueRounds =
-      useGetAllRoundsByLeagueIdQuery(leagueId)?.data?.results;
-    let matchdays = [];
-    for (let i = currentRound; i <= leagueRounds; i++) {
-      matchdays[i] = i;
-    }
-    console.log(currentRound);
-
-    const Fixture = ({ matchday }) => {
-      const { data: results, isFetching } =
-        useGetResultsByRoundAndLeagueIdQuery({
-          leagueId,
-          round: matchday,
-        });
-      if (isFetching) return <Loader />;
-      return (
-        <>
-          <h1 style={{ marginTop: "2vh", textAlign: "center" }}>
-            Matchday {matchday}
-          </h1>
-          {results?.response.map((res) => (
-            <div
-              className="standings-results"
-              onClick={() =>
-                navigate(`/standings/${leagueId}/fixture/${res?.fixture?.id}`)
-              }
-            >
-              <div style={{ flex: 1 }}>
-                {DateTime.fromISO(res?.fixture?.date).toFormat("dd-LL-y T")}
-              </div>
-
-              <div style={{ flex: 1, textAlign: "left" }}>
-                <div>
-                  <img
-                    src={res?.teams?.home?.logo}
-                    alt=""
-                    height="20px"
-                    width="20px"
-                  />
-                  {res?.teams?.home?.name}
-                </div>
-                <div>
-                  <img
-                    src={res?.teams?.away?.logo}
-                    alt=""
-                    height="20px"
-                    width="20px"
-                  />
-                  {res?.teams?.away?.name}
-                </div>
-              </div>
-            </div>
-          ))}
-        </>
-      );
-    };
-    return matchdays.map((matchday) => <Fixture matchday={matchday} />);
-  };
-  const TopScorers = () => {
-    const topscorers =
-      useGetTopScorersByLeagueIdQuery(leagueId)?.data?.response;
-    console.log(topscorers);
-
-    const Row = ({ topscorer, rank }) => {
-      return (
-        <tr>
-          <td>{rank + 1}</td>
-          <td onClick={() => navigate(`/player/${topscorer?.player?.id}`)}>
-            {topscorer?.player?.name}
-          </td>
-          <td
-            onClick={() =>
-              navigate(`/teams/${topscorer?.statistics[0]?.team?.id}`)
-            }
-          >
-            {topscorer?.statistics[0]?.team?.name}
-          </td>
-          <td>{topscorer?.statistics[0]?.goals?.total}</td>
-          <td>{topscorer?.statistics[0]?.goals?.assists || 0}</td>
-        </tr>
-      );
-    };
-    return (
-      <div className="topscorers">
-        <table>
-          <tr>
-            <th>#</th>
-            <th>Player</th>
-            <th>Team</th>
-            <th>Goals</th>
-            <th>Assists</th>
-          </tr>
-          {topscorers?.map((topscorer, index) => (
-            <Row topscorer={topscorer} rank={index} />
-          ))}
-        </table>
-      </div>
-    );
-  };
-  const Archive = () => {
-    const seasons = useGetLeagueByIdQuery(leagueId)?.data?.response[0]?.seasons;
-    return (
-      <div className="archive">
-        {seasons?.map((season) => (
-          <div
-            onClick={() => {
-              setSeason(season?.year);
-              setDisplay("table");
-            }}
-          >
-            <img src={league?.logo} alt="" />
-            <strong>
-              {league?.name} {season?.year}/{season?.year + 1}
-            </strong>
-          </div>
-        ))}
-      </div>
-    );
-  };
-
-
-  const [star, setStar] = useState(isFavorite);
   const [display, setDisplay] = useState("table");
-  
+
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
-  const handleResize = () =>{ 
+  const handleResize = () => {
     setScreenWidth(window.innerWidth);
-    console.log(screenWidth);
-  }
+  };
   useEffect(() => {
     window.addEventListener("resize", handleResize, false);
   }, []);
 
- 
+  useEffect(() => {
+    if (archive) setSeason(archive);
+  }, [archive]);
+
+  const Buttons = () => {
+    return (
+      <div className="standings-buttons">
+        <button
+          className="standings-button"
+          onClick={() => setDisplay("table")}
+        >
+          Standings
+        </button>
+        <button
+          className="standings-button"
+          onClick={() => setDisplay("results")}
+        >
+          Results
+        </button>
+        <button
+          className="standings-button"
+          onClick={() => setDisplay("fixtures")}
+        >
+          Fixtures
+        </button>
+        <button
+          className="standings-button"
+          onClick={() => setDisplay("topscorers")}
+        >
+          TopScorers
+        </button>
+        <button
+          className="standings-button"
+          onClick={() => setDisplay("archive")}
+        >
+          Archive
+        </button>
+      </div>
+    );
+  };
+
   if (isFetching) return <Loader />;
   return (
     <>
       <div className="standings-container">
-        {screenWidth>450 && <Leagues />}
+        {screenWidth > 450 && <Leagues />}
         <div>
           <div className="standings-league-name">
             <img src={league?.logo} alt="" className="standings-league-logo" />
             <h1>
               {league?.name} {league?.season}/{league?.season + 1}
             </h1>
-            <h2 >
-              {!star && (
-                <BsStar
-                  onClick={() => {
-                    dispatch(addNewFavoriteLeague(parseInt(leagueId)));
-                    return setStar(true);
-                  }}
-                />
-              )}
-              {star && (
-                <BsStarFill
-                  onClick={() => {
-                    dispatch(removeFromFavoriteLeagues(parseInt(leagueId)));
-                    setStar(false);
-                  }}
-                />
-              )}
+            <h2>
+              <StarLeague leagueId={leagueId} />
             </h2>
           </div>
-          <div className="standings-buttons">
-            <button
-              className="standings-button"
-              onClick={() => setDisplay("table")}
-            >
-              Standings
-            </button>
-            <button
-              className="standings-button"
-              onClick={() => setDisplay("results")}
-            >
-              Results
-            </button>
-            <button
-              className="standings-button"
-              onClick={() => setDisplay("fixtures")}
-            >
-              Fixtures
-            </button>
-            <button
-              className="standings-button"
-              onClick={() => setDisplay("topscorers")}
-            >
-              TopScorers
-            </button>
-            <button
-              className="standings-button"
-              onClick={() => setDisplay("archive")}
-            >
-              Archive
-            </button>
-          </div>
+          <Buttons />
           {display === "table" && <Table season={season} leagueId={leagueId} />}
-          {display === "results" && <Results />}
-          {display === "fixtures" && <Fixtures />}
-          {display === "topscorers" && <TopScorers />}
-          {display === "archive" && <Archive />}
+          {display === "results" && (
+            <Suspense>
+              <LeagueResults leagueId={leagueId} currentRound={currentRound} />
+            </Suspense>
+          )}
+          {display === "fixtures" && (
+            <Suspense>
+              <NextFixtures leagueId={leagueId} currentRound={currentRound} />
+            </Suspense>
+          )}
+          {display === "topscorers" && (
+            <Suspense>
+              <TopScorers leagueId={leagueId} />
+            </Suspense>
+          )}
+          {display === "archive" && (
+            <Suspense>
+              <Archive
+                leagueId={leagueId}
+                league={league}
+                changeDisplay={() => setDisplay("table")}
+                currentSeason={season}
+              />
+            </Suspense>
+          )}
         </div>
       </div>
     </>

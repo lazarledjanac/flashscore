@@ -55,7 +55,7 @@ const Match = () => {
       <div className="match-league-name">
         <center>
           {match?.league?.country} <img src={match?.league?.flag} /> :{" "}
-          {match?.league?.name}- {match?.league?.round}:{" "}
+          {match?.league?.name} - {match?.league?.round} round:{" "}
         </center>
       </div>
       <hr style={{ width: "30%" }} />
@@ -66,18 +66,22 @@ const Match = () => {
       </center>
       <div className="match-teams-container">
         {!isFavoriteHome && (
-          <BsStar
-            onClick={() => {
-              dispatch(addNewFavoriteTeam(parseInt(homeId)));
-            }}
-          />
+          <h3>
+            <BsStar
+              onClick={() => {
+                dispatch(addNewFavoriteTeam(parseInt(homeId)));
+              }}
+            />
+          </h3>
         )}
         {isFavoriteHome && (
-          <BsStarFill
-            onClick={() => {
-              dispatch(removeFromFavoriteTeams(parseInt(homeId)));
-            }}
-          />
+          <h3>
+            <BsStarFill
+              onClick={() => {
+                dispatch(removeFromFavoriteTeams(parseInt(homeId)));
+              }}
+            />
+          </h3>
         )}
         <div
           className="match-team"
@@ -125,21 +129,24 @@ const Match = () => {
           </h2>
         </div>
         {!isFavoriteAway && (
-          <BsStar
-            onClick={(e) => {
-              e.preventDefault();
-              dispatch(addNewFavoriteTeam(parseInt(awayId)));
-            }}
-          />
+          <h3>
+            <BsStar
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(addNewFavoriteTeam(parseInt(awayId)));
+              }}
+            />
+          </h3>
         )}
         {isFavoriteAway && (
-          <BsStarFill
-            style={{ paddingTop: "35px" }}
-            onClick={(e) => {
-              e.preventDefault();
-              dispatch(removeFromFavoriteTeams(parseInt(awayId)));
-            }}
-          />
+          <h3>
+            <BsStarFill
+              onClick={(e) => {
+                e.preventDefault();
+                dispatch(removeFromFavoriteTeams(parseInt(awayId)));
+              }}
+            />
+          </h3>
         )}
       </div>
       <hr style={{ width: "50vw" }} />

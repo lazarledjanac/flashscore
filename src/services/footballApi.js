@@ -93,7 +93,7 @@ export const footballApi = createApi({
       query: (id) => createRequest(`/leagues?team=${id}`),
     }),
     getSquadByTeamId: builder.query({
-      query: (id) => createRequest(`/players/squads?team=${id}`),
+      query: (id) => createRequest(`/squads?team=${id}`),
     }),
     getTransfersByPlayerId: builder.query({
       query: (id) => createRequest(`/transfers?player=${id}`),
@@ -115,6 +115,9 @@ export const footballApi = createApi({
     }),
     getTrophiesByPlayerId: builder.query({
       query: (id) => createRequest(`/trophies?player=${id}`),
+    }),
+    getAllCountries: builder.query({
+      query: () => createRequest(`/countries`),
     }),
   }),
 });
@@ -151,4 +154,5 @@ export const {
   useGetCoachByIdQuery,
   useGetTrophiesByCoachIdQuery,
   useGetTrophiesByPlayerIdQuery,
+  useGetAllCountriesQuery,
 } = footballApi;

@@ -14,6 +14,8 @@ const Table = ({
     season,
     leagueId,
   })?.data?.response[0]?.league?.standings[0];
+
+  console.log(standings);
   const Row = ({ res }) => {
     let style;
     const description = res?.description;
@@ -23,13 +25,17 @@ const Table = ({
     const UEL = description?.substring(0, 25) === "Promotion - Europa League";
     const UECL =
       description?.substring(0, 36) === "Promotion - Europa Conference League";
-    if (relegation) style = { backgroundColor: "darkred", color: "white" };
-    else if (UCL)
+    if (relegation) {
+      style = { backgroundColor: "darkred", color: "white" };
+    }
+    if (UCL) {
       style = { backgroundColor: "rgb(18, 0, 153)", color: "white" };
-    else if (UEL) style = { backgroundColor: "rgb(179, 0, 0)", color: "white" };
-    else if (UECL)
+    }
+    if (UEL) {
+      style = { backgroundColor: "rgb(179, 0, 0)", color: "white" };
+    } else if (UECL) {
       style = { backgroundColor: "rgb(153, 153, 0)", color: "white" };
-    else if (description && description.substring(0, 9) === "Promotion") {
+    } else if (description?.substring(0, 9) === "Promotion") {
       style = { backgroundColor: "rgb(18, 0, 153)", color: "white" };
     }
     let spans = [];
@@ -61,15 +67,29 @@ const Table = ({
         }
         onClick={() => changeState()}
       >
-        <td style={style}>{res?.rank}</td>
+        <td style={style} className="dropdown">
+          {res?.rank}
+          <div className="dropdown-qualification-content" style={style}>
+            {description}
+          </div>
+        </td>
         <td
-          className="standings-team-name"
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+          }}
           onClick={() => {
             navigate(`/standings/${leagueId}/teams/${res?.team?.id}`);
           }}
         >
-          <img src={res?.team?.logo} id="table-team-logo" alt="" />
-           {res?.team?.name}
+          <div className="dropdown">
+            <img src={res?.team?.logo} id="table-team-logo" alt="" />
+
+            <div className="dropdown-content">
+              <img src={res?.team?.logo} alt="" width="200px" height="200px" />
+            </div>
+          </div>
+          <div className="standings-team-name">{res?.team?.name}</div>
         </td>
         <td>{res?.all?.played}</td>
         <td>{res?.all?.win}</td>

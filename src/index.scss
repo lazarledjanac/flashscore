@@ -10,7 +10,7 @@ code {
 }
 .navbar {
   width: 100%;
-  background-color: black;
+  background-color: #252525;
 }
 .modal-wrapper {
   position: fixed;
@@ -48,10 +48,11 @@ code {
 .container {
   display: grid;
   grid-template-columns: 13vw 45vw;
-  margin: 5vh 0 20vw 20vw;
+  margin: 5vh 20vw 0vw 20vw;
   column-gap: 10px;
   .games {
     width: 100%;
+    height: fit-content;
     background-color: white;
     border-radius: 15px;
     padding: 10px;
@@ -260,6 +261,10 @@ code {
         h4{
           font-size: 2em; margin-top: 20px;
         }
+      }
+      h3{
+        margin:0;
+        margin-left: 10px;
       }
       margin-bottom: 10px;
     }
@@ -524,6 +529,7 @@ code {
     }
     .search-icon-container,
     .login-icon-container {
+     
       padding-left: 5px;
       padding-right: 5px;
     }
@@ -629,8 +635,13 @@ code {
     align-items: center;
     padding: 1vh;
     cursor: pointer;
+    img{
+      width:30px;
+      height:30px;
+      margin-right: 10px;
+    }
   }
-  div:hover {
+  #leagues-name:hover {
     background-color: rgb(240, 240, 240);
     text-decoration: underline;
     transition: ease 200ms;
@@ -711,6 +722,11 @@ code {
   justify-content: center;
   display: inline-flex;
   margin-bottom:10vh;
+  h3{
+        margin-top: 5vh;
+        margin-right: 1vw;
+        margin-left: 1vw;
+      }
   center{
         h4{
           font-size: 3em; margin: 1vw;
@@ -837,6 +853,9 @@ code {
   flex-direction: row;
   width: 90%;
   margin: 1vh 0;
+  text,b{
+    cursor: pointer;
+  }
   .icon {
     height: auto;
     width: 1.5vw;
@@ -850,6 +869,9 @@ code {
   width: 90%;
   margin: 1vh 0;
   justify-content: right;
+  text,b{
+    cursor: pointer;
+  }
   .icon {
     height: auto;
     width: 1.5vw;
@@ -1035,6 +1057,7 @@ code {
   flex-direction: row;
   gap: 1vw;
   margin-left: 5vw;
+  padding-bottom: 20px;
 }
 .standings-league-name {
   display: flex;
@@ -1061,14 +1084,7 @@ code {
   background-color: white;
   margin-top: 5px;
   .standings-team-name {
-    text-align:left;
-    padding-left: 1vw;
-    width: fit-content;
     cursor: pointer;
-    img {
-      height: 20px;
-      width: 20px;
-    }
   }
   .standings-form {
     display: flex;
@@ -1132,7 +1148,7 @@ code {
   background-color: white;
   display: flex;
   flex-direction: column;
-  width: 16vw;
+  width: fit-content;
   height: fit-content;
   justify-content: start;
   align-items: center;
@@ -1140,6 +1156,7 @@ code {
   margin-top: 15vh;
   margin-left: 10vw;
   box-shadow: $boxshadow;
+  padding: 0 15px;
   div {
     width: 100%;
     text-align: center;
@@ -1642,4 +1659,103 @@ code {
     border: none;
     margin-bottom: 1vh;
   }
+}
+.dropdown{
+  position: relative;
+  margin-bottom: 10px;
+  width: max-content;
+}
+.dropdown-qualification-content{
+  display: none;
+  position: absolute;
+  right:10px;
+  top: 40px;
+  color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  font-weight: bold;
+}
+.dropdown:hover .dropdown-qualification-content {
+  display: block;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  z-index: 1;
+  right:50px;
+  top:0;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+#table-team-logo{
+  height: 20px;
+  width: 20px;
+  margin-top: 5px;
+  margin-left: 1vw;
+  margin-right: .5vw;
+}
+.countries{
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  width:90%;
+  height: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  text-decoration: none;
+  center{
+    width: 95%;
+  }
+  i{
+    display:none;
+    width: 5%;
+  }
+}
+.countries:hover{
+    cursor: pointer;
+    text-decoration: none;
+    background-color: lightgray;
+    i{
+      display: block;
+    }
+}
+.countries-active{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width:90%;
+    background-color: lightgray;
+    height: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    text-decoration: none;
+    center{
+      width: 95%;
+    }
+    i{
+      display:block;
+      width: 5%;
+    }
+}
+.countries-leagues{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  div{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height:fit-content;
+    font-size: 12px;
+  }
+}
+.countries-leagues div:hover{
+  background-color: rgb(240, 240, 240);
 }

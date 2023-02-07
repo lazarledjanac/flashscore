@@ -82,7 +82,7 @@ const Odds = ({ id, homeGoals, awayGoals }) => {
       <>
         <MatchWinnerOdds />
         <GoalsOdds />
-        <BothTeamsScore />
+        {/* <BothTeamsScore /> */}
       </>
     );
   else {

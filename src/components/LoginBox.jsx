@@ -32,7 +32,10 @@ const LoginBox = ({ close }) => {
         </div>
         <hr />
         {active === "login" && (
-          <LoginForm setActive={() => setActive("signup")} />
+          <LoginForm
+            setActive={() => setActive("signup")}
+            close={() => close()}
+          />
         )}
         {active === "signup" && (
           <SignUpForm setActive={() => setActive("login")} />
