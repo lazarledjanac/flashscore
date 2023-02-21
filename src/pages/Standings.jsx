@@ -19,7 +19,8 @@ const Standings = () => {
 
   const year = archive ? archive : DateTime.now().year - 1;
   const [season, setSeason] = useState(year);
-  console.log(season);
+  const [display, setDisplay] = useState("table");
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const isFetching = useGetStandingsBySeasonAndLeagueIdQuery({
     season,
@@ -30,48 +31,8 @@ const Standings = () => {
     season: parseInt(season),
     leagueId,
   })?.data?.response[0].league;
-  console.log(league);
   const currentRound =
     useGetCurrentRoundByLeagueIdQuery(leagueId)?.data?.response[0]?.slice(-2);
-
-  const Leagues = () => {
-    const { data: leagues, isFetching } = useGetLeagueByCountryNameQuery(
-      league?.country
-    );
-    console.log(leagues);
-    if (isFetching) return <Loader />;
-    return (
-      <div className="national-leagues">
-        <section style={{ display: "flex", justifyContent: "center" }}>
-          <img
-            src={league?.flag}
-            alt=""
-            width="50px"
-            height="30px"
-            style={{ marginTop: "2vh" }}
-          />
-          <h3>{league?.country}</h3>
-        </section>
-        <hr width="100%" />
-        {leagues?.response?.map((res) => (
-          <div
-            onClick={() => {
-              if (res?.league?.type === "League") {
-                navigate(`/standings/${res?.league?.id}`);
-                // setDisplay("table");
-              }
-            }}
-          >
-            {res?.league?.name}
-          </div>
-        ))}
-      </div>
-    );
-  };
-
-  const [display, setDisplay] = useState("table");
-
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const handleResize = () => {
     setScreenWidth(window.innerWidth);
@@ -120,7 +81,40 @@ const Standings = () => {
       </div>
     );
   };
-
+  const Leagues = () => {
+    const { data: leagues, isFetching } = useGetLeagueByCountryNameQuery(
+      league?.country
+    );
+    console.log(leagues);
+    if (isFetching) return <Loader />;
+    return (
+      <div className="national-leagues">
+        <section style={{ display: "flex", justifyContent: "center" }}>
+          <img
+            src={league?.flag}
+            alt=""
+            width="50px"
+            height="30px"
+            style={{ marginTop: "2vh" }}
+          />
+          <h3>{league?.country}</h3>
+        </section>
+        <hr width="100%" />
+        {leagues?.response?.map((res) => (
+          <div
+            onClick={() => {
+              if (res?.league?.type === "League") {
+                navigate(`/standings/${res?.league?.id}`);
+                // setDisplay("table");
+              }
+            }}
+          >
+            {res?.league?.name}
+          </div>
+        ))}
+      </div>
+    );
+  };
   if (isFetching) return <Loader />;
   return (
     <>

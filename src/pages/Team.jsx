@@ -20,8 +20,8 @@ const Team = () => {
   const league = useGetLeagueByTeamIdQuery(teamId).data;
   const isNationalTeam = team?.national;
 
-  const year = DateTime.now().year;
-  const [season, setSeason] = useState(year);
+  const season =
+    DateTime.now().month < 7 ? DateTime.now().year - 1 : DateTime.now().year;
 
   const Info = () => {
     return (

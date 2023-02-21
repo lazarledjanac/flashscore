@@ -1,101 +1,140 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import "../index.scss";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { BsCalendar3 } from "react-icons/bs";
-import { Loader, Fixture } from "../components";
-import {
-  useGetFixturesByDateQuery,
-  useGetLiveFixturesQuery,
-  useGetPreviousFixturesQuery,
-  useGetNextFixturesQuery,
-} from "../services/footballApi";
 import { DateTime } from "luxon";
+import { Calendar } from ".";
+import { useSelector, useDispatch } from "react-redux";
+import { setDate } from "../services/Redux";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
+
+const AllFixtures = lazy(() => import("../components/fixtures/AllFixtures"));
+const LiveFixtures = lazy(() => import("../components/fixtures/LiveFixtures"));
+const FinishedFixtures = lazy(() =>
+  import("../components/fixtures/FinishedFixtures")
+);
+const UpcomingFixtures = lazy(() =>
+  import("../components/fixtures/UpcomingFixtures")
+);
 
 const Fixtures = () => {
-  const now = DateTime.now();
-  const [date, setDate] = useState(now);
-
-  const { data: fixturesList, isFetching } = useGetFixturesByDateQuery(
-    date.toFormat("y-LL-dd")
-  );
-
-  const { data: liveFixturesList } = useGetLiveFixturesQuery();
-  const { data: finishedFixturesList } = useGetPreviousFixturesQuery();
-  const { data: upcomingFixturesList } = useGetNextFixturesQuery();
-
+  const today = DateTime.now();
+  const dispatch = useDispatch();
+  const { date } = useSelector((store) => store.redux);
   const [fixtures, setFixtures] = useState("all");
+  const [showCalendar, setShowCalendar] = useState(false);
+  const isToday =
+    date.c.year == today.c.year &&
+    date.c.month == today.c.month &&
+    date.c.day == today.c.day;
 
   useEffect(() => {
-    setDate(now);
-  }, [fixtures]);
-
-  if (isFetching) return <Loader />;
+    setShowCalendar(false);
+  }, [date]);
 
   return (
     <div className="games">
       <div className="buttons-container">
-        <div className="date">
-          <IoIosArrowBack
-            className="date-buttons"
-            onClick={() => {
-              setDate(date.minus({ days: 1 }));
-            }}
+        <div style={{ position: "relative", flex: 1 }}>
+          <div className="date" id="calendar">
+            <IoIosArrowBack
+              className="date-buttons"
+              onClick={() => {
+                dispatch(setDate(date.minus({ days: 1 })));
+              }}
+            />
+            <BsCalendar3
+              className="date-buttons"
+              onClick={() =>
+                setShowCalendar((prevState) => {
+                  return !prevState;
+                })
+              }
+            />
+            <strong
+              onClick={() =>
+                setShowCalendar((prevState) => {
+                  return !prevState;
+                })
+              }
+              style={{ cursor: "pointer" }}
+            >
+              {date.toFormat("dd / LL ")}
+            </strong>
+            <IoIosArrowForward
+              className="date-buttons"
+              onClick={() => {
+                dispatch(setDate(date.plus({ days: 1 })));
+              }}
+            />
+          </div>
+          <Tooltip
+            anchorId="calendar"
+            content="Click to open calendar"
+            place="top"
           />
-          <BsCalendar3 className="date-buttons" />
-          <strong>{date.toFormat("dd / LL ")}</strong>
-          <IoIosArrowForward
-            className="date-buttons"
-            onClick={() => {
-              setDate(date.plus({ days: 1 }));
-            }}
-          />
+          <Calendar date={date} show={showCalendar} />
         </div>
-        <button
-          className={fixtures === "all" ? "active" : null}
-          onClick={() => {
-            setFixtures("all");
-          }}
-        >
-          ALL
-        </button>
-        <button
-          className={fixtures === "live" ? "active" : null}
-          onClick={() => {
-            setFixtures("live");
-          }}
-        >
-          LIVE
-        </button>
-        <button
-          className={fixtures === "finished" ? "active" : null}
-          onClick={() => {
-            setFixtures("finished");
-          }}
-        >
-          PLAYED
-        </button>
-        <button
-          className={fixtures === "upcoming" ? "active" : null}
-          onClick={() => {
-            setFixtures("upcoming");
-          }}
-        >
-          SCHEDULED
-        </button>
+        {isToday && (
+          <>
+            <button
+              className={fixtures === "all" ? "active" : null}
+              onClick={() => {
+                setFixtures("all");
+              }}
+            >
+              ALL
+            </button>
+            <button
+              className={fixtures === "live" ? "active" : null}
+              onClick={() => {
+                setFixtures("live");
+              }}
+            >
+              LIVE
+            </button>
+            <button
+              className={fixtures === "finished" ? "active" : null}
+              onClick={() => {
+                setFixtures("finished");
+              }}
+            >
+              PLAYED
+            </button>
+            <button
+              className={fixtures === "scheduled" ? "active" : null}
+              onClick={() => {
+                setFixtures("scheduled");
+              }}
+            >
+              SCHEDULED
+            </button>
+          </>
+        )}
       </div>
       <br />
-      {fixtures === "all" &&
-        fixturesList?.response.map((fixture) => <Fixture game={fixture} />)}
-      {fixtures === "live" &&
-        liveFixturesList?.response.map((fixture) => <Fixture game={fixture} />)}
-      {fixtures === "finished" &&
-        finishedFixturesList?.response.map((fixture) => (
-          <Fixture game={fixture} />
-        ))}
-      {fixtures === "upcoming" &&
-        upcomingFixturesList?.response.map((fixture) => (
-          <Fixture game={fixture} />
-        ))}
+
+      {fixtures === "all" && (
+        <Suspense>
+          <AllFixtures />
+        </Suspense>
+      )}
+      {fixtures === "live" && (
+        <Suspense>
+          <LiveFixtures />
+        </Suspense>
+      )}
+      {fixtures === "finished" && (
+        <Suspense>
+          <FinishedFixtures date={date} />
+        </Suspense>
+      )}
+      {fixtures === "scheduled" && (
+        <Suspense>
+          <UpcomingFixtures date={date} />
+        </Suspense>
+      )}
     </div>
   );
 };

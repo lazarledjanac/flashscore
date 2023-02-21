@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const footballApiHeaders = {
-  "X-RapidAPI-Key": "b9a82d3ce8mshecad553a2fe2f38p14be23jsn2077049af767", //yahoo
-  // "X-RapidAPI-Key": "e2685d08d9msh237ed081fdee5e3p1cab4djsndf01bbc9a1d0", //google
+  // "X-RapidAPI-Key": "b9a82d3ce8mshecad553a2fe2f38p14be23jsn2077049af767", //yahoo
+  "X-RapidAPI-Key": "e2685d08d9msh237ed081fdee5e3p1cab4djsndf01bbc9a1d0", //google
   "X-RapidAPI-Host": "api-football-beta.p.rapidapi.com'",
 };
 const baseUrl = "https://api-football-beta.p.rapidapi.com";
@@ -39,10 +39,10 @@ export const footballApi = createApi({
         createRequest(`/fixtures?team=${teamId}&next=${next}`),
     }),
     getPreviousFixtures: builder.query({
-      query: () => createRequest(`/fixtures?last=50`),
+      query: (date) => createRequest(`/fixtures?date=${date}&status=ft`),
     }),
-    getNextFixtures: builder.query({
-      query: () => createRequest(`/fixtures?next=50`),
+    getUpcomingFixtures: builder.query({
+      query: (date) => createRequest(`/fixtures?date=${date}&status=ns`),
     }),
     getLiveFixtures: builder.query({
       query: () => createRequest(`/fixtures?live=all`),
@@ -131,7 +131,7 @@ export const {
   useGetPreviousFixturesByTeamIdQuery,
   useGetNextFixturesByTeamIdQuery,
   useGetPreviousFixturesQuery,
-  useGetNextFixturesQuery,
+  useGetUpcomingFixturesQuery,
   useGetLiveFixturesQuery,
   useGetStandingsByLeagueIdQuery,
   useGetLeagueByCountryNameQuery,

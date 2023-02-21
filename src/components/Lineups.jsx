@@ -121,10 +121,16 @@ const Lineups = ({ id }) => {
           className="starting-lineup-player"
           style={{ borderRadius: "15px" }}
         >
-          <div style={{ textAlign: "left" }}>
+          <div
+            style={{ textAlign: "left", cursor: "pointer" }}
+            onClick={() => navigate(`/coach/${match?.lineups[0]?.coach?.id}`)}
+          >
             {match?.lineups[0]?.coach?.name}
           </div>
-          <div style={{ textAlign: "right" }}>
+          <div
+            style={{ textAlign: "right", cursor: "pointer" }}
+            onClick={() => navigate(`/coach/${match?.lineups[1]?.coach?.id}`)}
+          >
             {match?.lineups[1]?.coach?.name}
           </div>
         </div>

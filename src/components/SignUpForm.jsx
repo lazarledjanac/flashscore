@@ -33,10 +33,6 @@ const SignUpForm = ({ setActive }) => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  //   useEffect(() => {
-  //     userRef.current.focus();
-  //   }, []);
-
   useEffect(() => {
     setValidName(USER_REGEX.test(user));
   }, [user]);

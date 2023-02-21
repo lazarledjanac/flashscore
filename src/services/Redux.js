@@ -1,4 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { DateTime } from "luxon";
+
+const today = DateTime.now();
 
 const initialState = {
   favoriteLeagues: [39, 78, 140, 61, 135, 88],
@@ -10,6 +13,7 @@ const initialState = {
     password: null,
   },
   loggedIn: false,
+  date: today,
 };
 
 export const reduxSlice = createSlice({
@@ -55,6 +59,9 @@ export const reduxSlice = createSlice({
     setFavoriteTeams: (state, { payload }) => {
       state.favoriteTeams = payload;
     },
+    setDate: (state, { payload }) => {
+      state.date = payload;
+    },
   },
 });
 export const {
@@ -67,5 +74,6 @@ export const {
   setUsers,
   setFavoriteLeagues,
   setFavoriteTeams,
+  setDate,
 } = reduxSlice.actions;
 export default reduxSlice.reducer;

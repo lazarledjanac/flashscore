@@ -32,3 +32,6 @@ export { default as TopScorers } from "./TopScorers";
 export { default as Archive } from "./Archive";
 export { default as Transfers } from "./Transfers";
 export { default as Squad } from "./Squad";
+export { default as Calendar } from "./Calendar";
+export { default as CalendarWeek } from "./CalendarWeek";
+export { default as CalendarDay } from "./CalendarDay";

@@ -3,7 +3,6 @@ import {
   useGetTrophiesByCoachIdQuery,
   useGetTrophiesByPlayerIdQuery,
 } from "../services/footballApi";
-import { useNavigate } from "react-router-dom";
 
 const Achievements = ({ coachId, playerId }) => {
   const coachAchievements =

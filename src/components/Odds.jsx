@@ -61,28 +61,11 @@ const Odds = ({ id, homeGoals, awayGoals }) => {
       </center>
     );
   };
-  const BothTeamsScore = () => {
-    const bothTeamsScored = homeGoals != 0 && awayGoals != 0;
-    return (
-      <center>
-        <h3>Both Teams Score</h3>
-        <div className="odds" style={{ gridTemplateColumns: "7vw 7vw " }}>
-          <div className={bothTeamsScored ? "odd-active" : "odd"}>
-            Yes | {odds[9]?.values[0]?.odd}
-          </div>
-          <div className={!bothTeamsScored ? "odd-active" : "odd"}>
-            No | {odds[9]?.values[1]?.odd}
-          </div>
-        </div>
-      </center>
-    );
-  };
   if (odds)
     return (
       <>
         <MatchWinnerOdds />
         <GoalsOdds />
-        {/* <BothTeamsScore /> */}
       </>
     );
   else {

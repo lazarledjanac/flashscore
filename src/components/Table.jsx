@@ -15,7 +15,12 @@ const Table = ({
     leagueId,
   })?.data?.response[0]?.league?.standings[0];
 
-  console.log(standings);
+  console.log(
+    useGetStandingsBySeasonAndLeagueIdQuery({
+      season,
+      leagueId,
+    })
+  );
   const Row = ({ res }) => {
     let style;
     const description = res?.description;
@@ -66,6 +71,7 @@ const Table = ({
             : null
         }
         onClick={() => changeState()}
+        key={res}
       >
         <td style={style} className="dropdown">
           {res?.rank}
@@ -79,12 +85,11 @@ const Table = ({
             alignItems: "baseline",
           }}
           onClick={() => {
-            navigate(`/standings/${leagueId}/teams/${res?.team?.id}`);
+            navigate(`/teams/${res?.team?.id}`);
           }}
         >
           <div className="dropdown">
             <img src={res?.team?.logo} id="table-team-logo" alt="" />
-
             <div className="dropdown-content">
               <img src={res?.team?.logo} alt="" width="200px" height="200px" />
             </div>
